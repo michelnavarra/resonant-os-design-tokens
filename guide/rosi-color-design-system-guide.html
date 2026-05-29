@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROSI Design System — ResonantOS Browser</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Base ── */
+:root {
+  /* ROSI v0.2 — ResonantOS Browser Tokens */
+  --surface-deepest: #1A1E21;
+  --surface-deep: #1E2327;
+  --surface-raised: #262B30;
+  --surface-overlay: #2A3038;
+  --surface-hover: #323940;
+  --border-subtle: #363D44;
+  --border-strong: #4A5259;
+  --text-primary: #E8EAED;
+  --text-secondary: #9AA0A6;
+  --text-tertiary: #6B7280;
+  --text-on-accent: #1A1E21;
+  --accent: #8AB4A0;
+  --accent-strong: #6BC49F;
+  --accent-muted: #3D5A4D;
+  --accent-hover: #7ECFAA;
+  --status-success: #6BC49F;
+  --status-running: #6BC49F;
+  --status-info: #8AB4A0;
+  --status-warning: #F0B429;
+  --status-error: #EF4444;
+  --chrome-tab-bg: #292D32;
+  --chrome-tab-active: #1E2327;
+  --chrome-toolbar: #1E2327;
+  --chrome-icon: #9AA0A6;
+
+  /* Spacing */
+  --sp-1: 2px;
+  --sp-2: 4px;
+  --sp-3: 8px;
+  --sp-4: 12px;
+  --sp-5: 16px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 48px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Elevation */
+  --shadow-none: none;
+  --shadow-panel: 0 0 20px rgba(0,0,0,0.3);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.15);
+  --shadow-dropdown: 0 4px 12px rgba(0,0,0,0.25);
+
+  /* Guide chrome — readable blue-gray, not too dark */
+  --guide-bg: #1E2327;
+  --guide-surface: #262B30;
+  --guide-surface-hover: #2E343C;
+
+  /* Layout */
+  --sidebar-w: 16rem;
+  --header-h: 3.5rem;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--guide-bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--guide-bg); }
+::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ── Header ── */
+.header {
+  position: fixed; inset: 0 0 auto 0; z-index: 100;
+  height: var(--header-h);
+  background: rgba(30,35,39,0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.25rem;
+}
+.brand {
+  display: flex; align-items: center; gap: 0.625rem;
+  font-weight: 600; font-size: 0.9375rem;
+  color: var(--text-primary); text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.brand-mark {
+  width: 24px; height: 24px; border-radius: var(--radius-full);
+  background: var(--accent-strong);
+  display: grid; place-items: center;
+  font-size: 0.75rem; color: var(--text-on-accent);
+}
+.header-meta {
+  font-size: 0.75rem; color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed; top: var(--header-h); left: 0; bottom: 0;
+  width: var(--sidebar-w); background: var(--surface-deep);
+  border-right: 1px solid var(--border-subtle);
+  overflow-y: auto; z-index: 50;
+}
+.sidebar-group { border-bottom: 1px solid var(--border-subtle); }
+.sidebar-group-title {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.625rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-tertiary); font-family: var(--font-sans);
+}
+.sidebar-link {
+  display: block; padding: 0.4rem 1.25rem;
+  color: var(--text-secondary); font-size: 0.8125rem;
+  text-decoration: none; border-left: 2px solid transparent;
+  transition: all 0.1s ease;
+}
+.sidebar-link:hover {
+  color: var(--text-primary); background: var(--surface-raised);
+}
+.sidebar-link.active {
+  color: var(--accent); background: var(--surface-raised);
+  border-left-color: var(--accent);
+}
+.sidebar-footer {
+  padding: 0.875rem 1.25rem;
+  font-size: 0.6875rem; color: var(--text-tertiary);
+  border-top: 1px solid var(--border-subtle); margin-top: auto;
+  line-height: 1.5;
+}
+
+/* ── Content ── */
+.content {
+  margin-left: var(--sidebar-w); padding-top: var(--header-h);
+  min-height: 100vh;
+}
+.page-inner { max-width: 56rem; padding: 2.5rem 2.5rem 5rem; }
+
+/* ── Hero ── */
+.hero {
+  padding: 2.5rem 0 2rem;
+  border-bottom: 1px solid var(--border-subtle); margin-bottom: 1.5rem;
+}
+.hero-kicker {
+  font-size: 0.6875rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent); margin-bottom: 0.5rem;
+}
+.hero h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.1; margin-bottom: 0.75rem;
+}
+.hero-desc {
+  font-size: 1rem; color: var(--text-secondary);
+  max-width: 34rem; line-height: 1.6;
+}
+.hero-mood {
+  display: flex; gap: 0.5rem; margin-top: 1.25rem; flex-wrap: wrap;
+}
+.mood-tag {
+  padding: 0.25rem 0.625rem; border-radius: var(--radius-sm);
+  font-size: 0.6875rem; font-weight: 500;
+  background: var(--guide-surface); color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ── Section Headers ── */
+.section-header {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  margin: 3rem 0 1rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.section-header:first-of-type { margin-top: 0; }
+.section-header h2 {
+  font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em;
+}
+.token-count {
+  font-size: 0.6875rem; color: var(--text-tertiary);
+  font-family: var(--font-mono); font-weight: 500;
+  background: var(--guide-surface); padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-sm);
+}
+.section-rationale {
+  font-size: 0.875rem; color: var(--text-secondary);
+  max-width: 40rem; margin-bottom: 1.25rem; line-height: 1.6;
+}
+
+/* ── Callouts ── */
+.callout {
+  display: flex; gap: 0.75rem;
+  background: var(--guide-surface);
+  border-left: 2px solid var(--accent);
+  padding: 0.875rem 1rem; margin: 1.25rem 0;
+  font-size: 0.8125rem; line-height: 1.55;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.callout-icon {
+  flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--accent); color: var(--text-on-accent);
+  display: grid; place-items: center; font-size: 0.625rem; font-weight: 700;
+}
+
+/* ── Token Tables ── */
+.token-table-wrap {
+  overflow-x: auto; margin: 1rem 0;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+}
+.token-table {
+  width: 100%; border-collapse: collapse; font-size: 0.8125rem;
+}
+.token-table th, .token-table td {
+  text-align: left; padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+.token-table th {
+  background: var(--guide-surface);
+  color: var(--text-secondary); font-weight: 600; font-size: 0.6875rem;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.token-table tbody tr { transition: background 0.1s; }
+.token-table tbody tr:hover { background: var(--guide-surface); }
+.token-table td:nth-child(3) { white-space: normal; max-width: 18rem; color: var(--text-secondary); font-size: 0.75rem; }
+.token-table td:nth-child(4) { white-space: normal; max-width: 14rem; color: var(--text-secondary); font-size: 0.75rem; }
+.token-name {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  color: var(--accent); font-weight: 500;
+  cursor: pointer; position: relative;
+}
+.token-name:hover { text-decoration: underline; }
+.token-name.copied::after {
+  content: 'Copied!'; position: absolute; left: 100%; top: 50%; transform: translateY(-50%);
+  margin-left: 0.4rem; font-size: 0.625rem; color: var(--status-success);
+  font-family: var(--font-sans); text-decoration: none;
+  animation: fadeOut 1.5s forwards;
+}
+@keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+.swatch {
+  width: 2rem; height: 2rem; border-radius: var(--radius-sm);
+  display: inline-block; vertical-align: middle;
+  border: 1px solid var(--border-subtle); position: relative;
+  cursor: pointer; transition: transform 0.15s;
+}
+.swatch:hover { transform: scale(1.08); }
+.hex-value {
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-tertiary);
+}
+.contrast-badge {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  padding: 0.15rem 0.4rem; border-radius: var(--radius-sm);
+  font-size: 0.6875rem; font-weight: 600; font-family: var(--font-mono);
+}
+.contrast-aaa {
+  background: rgba(107,196,159,0.1); color: var(--status-success);
+  border: 1px solid rgba(107,196,159,0.25);
+}
+.contrast-aa {
+  background: rgba(240,180,41,0.1); color: var(--status-warning);
+  border: 1px solid rgba(240,180,41,0.25);
+}
+.contrast-na {
+  background: var(--guide-surface); color: var(--text-tertiary);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ── Layering visual ── */
+.layer-stack {
+  display: flex; flex-direction: column; gap: 0;
+  border-radius: var(--radius-md); overflow: hidden;
+  border: 1px solid var(--border-subtle); margin: 1rem 0;
+}
+.layer-item {
+  padding: 0.875rem 1rem; display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.8125rem;
+}
+.layer-item code { font-family: var(--font-mono); font-size: 0.6875rem; }
+
+/* ── Context Demos ── */
+.demo-section { margin: 1.5rem 0; }
+.demo-title {
+  font-size: 0.625rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: 0.5rem;
+}
+.demo-box {
+  background: var(--guide-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: 1.25rem;
+  display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+}
+
+/* Buttons */
+.btn {
+  height: 2rem; padding: 0 1rem; border-radius: var(--radius-md);
+  font-size: 0.8125rem; font-weight: 500; font-family: inherit;
+  border: none; cursor: pointer; display: inline-flex;
+  align-items: center; gap: 0.4rem; transition: all 0.1s ease;
+}
+.btn-accent { background: var(--accent-strong); color: var(--text-on-accent); }
+.btn-accent:hover { background: var(--accent-hover); }
+.btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.btn-outline:hover { background: var(--accent-muted); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { background: var(--surface-hover); color: var(--text-primary); }
+.btn-disabled { background: var(--surface-raised); color: var(--text-tertiary); cursor: not-allowed; }
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.15rem 0.5rem; border-radius: var(--radius-sm);
+  font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.badge-running { background: rgba(107,196,159,0.15); color: var(--status-success); }
+.badge-done { background: var(--surface-hover); color: var(--text-secondary); }
+.badge-warning { background: rgba(240,180,41,0.12); color: var(--status-warning); }
+.badge-error { background: rgba(239,68,68,0.12); color: var(--status-error); }
+
+/* Status dot */
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.dot-running { background: var(--status-running); }
+.dot-warning { background: var(--status-warning); }
+.dot-error { background: var(--status-error); }
+
+/* Text samples */
+.text-sample-block {
+  padding: 1rem 1.25rem; border-radius: var(--radius-sm);
+  background: var(--surface-deepest); border: 1px solid var(--border-subtle);
+}
+.text-sample-block .primary { color: var(--text-primary); font-weight: 600; }
+.text-sample-block .secondary { color: var(--text-secondary); }
+.text-sample-block .muted { color: var(--text-tertiary); font-size: 0.75rem; }
+
+/* Chrome mockup */
+.chrome-mock {
+  border-radius: var(--radius-md); overflow: hidden;
+  border: 1px solid var(--border-subtle); margin: 1rem 0;
+}
+.chrome-tab-bar {
+  display: flex; align-items: center; gap: 0.25rem;
+  padding: 0.5rem 0.75rem; background: var(--chrome-tab-bg);
+}
+.chrome-tab {
+  padding: 0.35rem 0.75rem; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  font-size: 0.6875rem; color: var(--chrome-icon); background: transparent;
+}
+.chrome-tab.active { background: var(--chrome-tab-active); color: var(--text-primary); }
+.chrome-toolbar {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.75rem; background: var(--chrome-toolbar);
+  border-top: 1px solid var(--border-subtle);
+}
+.chrome-url {
+  flex: 1; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm);
+  background: var(--surface-raised); color: var(--text-secondary);
+  font-size: 0.6875rem; border: 1px solid var(--border-subtle);
+}
+
+/* Spec cards */
+.spec-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.75rem; margin: 1rem 0;
+}
+.spec-card {
+  background: var(--guide-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: 1rem;
+}
+.spec-card h4 {
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--text-secondary); margin-bottom: 0.625rem;
+}
+.spec-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.3rem 0; border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-label { color: var(--text-secondary); }
+.spec-value { font-family: var(--font-mono); color: var(--accent); font-size: 0.75rem; }
+
+/* Type specimen */
+.type-spec {
+  background: var(--guide-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.type-row { display: flex; flex-direction: column; gap: 0.25rem; }
+.type-sample { line-height: 1.3; }
+.type-meta {
+  font-family: var(--font-mono); font-size: 0.625rem; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+
+/* Spacing demo */
+.space-demo {
+  display: flex; align-items: flex-end; gap: 0.5rem;
+}
+.space-block {
+  background: var(--accent); opacity: 0.7; border-radius: 2px;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 0.15rem; font-size: 0.5625rem; color: var(--text-on-accent);
+  font-family: var(--font-mono);
+}
+
+/* Do / Don't */
+.dodont {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0;
+}
+.dodont-card {
+  background: var(--guide-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: 1rem; border-top: 2px solid;
+}
+.dodont-card h4 {
+  font-size: 0.6875rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; margin-bottom: 0.4rem;
+}
+.dodont-card.do { border-top-color: var(--status-success); }
+.dodont-card.do h4 { color: var(--status-success); }
+.dodont-card.dont { border-top-color: var(--status-error); }
+.dodont-card.dont h4 { color: var(--status-error); }
+.dodont-card p { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; margin: 0; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 0; }
+  .sidebar { transform: translateX(-100%); width: 16rem; z-index: 200; transition: transform 0.2s; }
+  .sidebar.open { transform: none; }
+  .mobile-toggle { display: flex !important; }
+  .page-inner { padding: 1.5rem 1rem 3rem; }
+  .dodont { grid-template-columns: 1fr; }
+}
+@media (min-width: 901px) {
+  .mobile-toggle { display: none !important; }
+}
+.mobile-toggle {
+  width: 2rem; height: 2rem; border-radius: var(--radius-sm);
+  background: var(--guide-surface); border: 1px solid var(--border-subtle);
+  color: var(--text-primary); align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 150; display: none;
+}
+.overlay.visible { display: block; }
+
+/* ── Back to top ── */
+.to-top {
+  position: fixed; right: 1.25rem; bottom: 1.25rem;
+  width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  background: var(--guide-surface); color: var(--text-primary);
+  border: 1px solid var(--border-subtle); cursor: pointer;
+  display: grid; place-items: center; font-size: 1rem;
+  opacity: 0; transition: opacity 0.2s; z-index: 30;
+}
+.to-top.visible { opacity: 1; }
+.to-top:hover { background: var(--guide-surface-hover); border-color: var(--accent); }
+
+/* ── Summary Grid ── */
+.summary-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.75rem; margin: 1.25rem 0;
+}
+.summary-card {
+  background: var(--guide-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: 1rem;
+  transition: border-color 0.15s;
+}
+.summary-card:hover { border-color: var(--border-strong); }
+.summary-card h4 {
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--text-secondary); margin-bottom: 0.2rem;
+}
+.summary-card .count {
+  font-size: 1.25rem; font-weight: 300; color: var(--accent);
+  font-family: var(--font-sans); letter-spacing: -0.02em;
+}
+.summary-card p { font-size: 0.6875rem; color: var(--text-tertiary); margin-top: 0.35rem; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="brand" href="#overview">
+    <div class="brand-mark">R</div>
+    <span>ROSI Design System</span>
+  </a>
+  <div class="header-meta">v0.2 · 60 tokens</div>
+  <button class="mobile-toggle" onclick="toggleSidebar()" aria-label="Toggle navigation" style="display:none">
+    <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+</header>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Guide</div>
+    <a class="sidebar-link active" href="#overview">Overview</a>
+    <a class="sidebar-link" href="#base">Base &amp; Surfaces</a>
+    <a class="sidebar-link" href="#border">Borders</a>
+    <a class="sidebar-link" href="#text">Text</a>
+    <a class="sidebar-link" href="#accent">Accent</a>
+    <a class="sidebar-link" href="#semantic">Semantic</a>
+    <a class="sidebar-link" href="#chrome">Chrome</a>
+    <a class="sidebar-link" href="#typo">Typography</a>
+    <a class="sidebar-link" href="#spacing">Spacing</a>
+    <a class="sidebar-link" href="#radius">Radius</a>
+    <a class="sidebar-link" href="#elevation">Elevation</a>
+    <a class="sidebar-link" href="#motion">Motion</a>
+    <a class="sidebar-link" href="#zindex">Z-Index</a>
+    <a class="sidebar-link" href="#summary">Summary</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a class="sidebar-link" href="#demos">Live Demos</a>
+    <a class="sidebar-link" href="#contrast">Contrast</a>
+    <a class="sidebar-link" href="#naming">Naming</a>
+    <a class="sidebar-link" href="#rules">Design Rules</a>
+  </div>
+  <div class="sidebar-footer">
+    ROSI · ResonantOS Browser<br>
+    Extracted from community build · 2026-05-27
+  </div>
+</aside>
+
+<main class="content">
+  <div class="page-inner">
+
+    <!-- ── Hero ── -->
+    <section class="hero" id="overview">
+      <div class="hero-kicker">ResonantOS Browser</div>
+      <h1>ROSI Design System</h1>
+      <p class="hero-desc">
+        Functional minimalism — a mission control terminal, dense with information, calm in color.
+        Blue-gray surfaces. A single muted sage green accent. Depth through tonal layering, not shadows.
+      </p>
+      <div class="hero-mood">
+        <span class="mood-tag">Functional</span>
+        <span class="mood-tag">Minimal</span>
+        <span class="mood-tag">Calm</span>
+        <span class="mood-tag">Dense</span>
+        <span class="mood-tag">Dark Only</span>
+      </div>
+    </section>
+
+    <div class="callout">
+      <div class="callout-icon">✦</div>
+      <div>
+        <strong>Dark at all times — no light theme.</strong> The system has ONE color language: blue-gray neutrals + sage green accent. Only warning (amber) and error (red) break from green. Every element earns its place.
+      </div>
+    </div>
+
+    <!-- ── Summary ── -->
+    <div class="summary-grid" id="summary">
+      <div class="summary-card"><h4>Surface</h4><div class="count">05</div><p>Blue-gray tonal layering</p></div>
+      <div class="summary-card"><h4>Border</h4><div class="count">02</div><p>Structural, not visual</p></div>
+      <div class="summary-card"><h4>Text</h4><div class="count">04</div><p>Primary, secondary, tertiary, on-accent</p></div>
+      <div class="summary-card"><h4>Accent</h4><div class="count">04</div><p>Sage green family</p></div>
+      <div class="summary-card"><h4>Semantic</h4><div class="count">05</div><p>Status + warning + error</p></div>
+      <div class="summary-card"><h4>Chrome</h4><div class="count">04</div><p>Browser shell integration</p></div>
+      <div class="summary-card"><h4>Typography</h4><div class="count">09</div><p>Display to code</p></div>
+      <div class="summary-card"><h4>Spacing</h4><div class="count">08</div><p>2px to 48px</p></div>
+      <div class="summary-card"><h4>Radius</h4><div class="count">04</div><p>4px, 8px, 12px, full</p></div>
+      <div class="summary-card"><h4>Elevation</h4><div class="count">04</div><p>Depth via shadow</p></div>
+      <div class="summary-card"><h4>Motion</h4><div class="count">04</div><p>100ms to 1.5s</p></div>
+      <div class="summary-card"><h4>Z-Index</h4><div class="count">07</div><p>Layering hierarchy</p></div>
+    </div>
+
+    <!-- ── Base Surfaces ── -->
+    <div class="section-header" id="base">
+      <h2>Base — Surfaces</h2>
+      <span class="token-count">5 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Blue-gray neutrals with warm undertones. Five tonal layers create depth without decoration. Darkest is the browser body. Each step lighter signals elevation. No shadows needed for basic hierarchy.
+    </p>
+
+    <div class="layer-stack">
+      <div class="layer-item" style="background: var(--surface-deepest); color: var(--text-primary);">
+        <span><strong>surface-deepest</strong> — Browser body, main content</span>
+        <code>--surface-deepest · #1A1E21</code>
+      </div>
+      <div class="layer-item" style="background: var(--surface-deep); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
+        <span><strong>surface-deep</strong> — Sidebar, chat area</span>
+        <code>--surface-deep · #1E2327</code>
+      </div>
+      <div class="layer-item" style="background: var(--surface-raised); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
+        <span><strong>surface-raised</strong> — Cards, inputs, containers</span>
+        <code>--surface-raised · #262B30</code>
+      </div>
+      <div class="layer-item" style="background: var(--surface-overlay); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
+        <span><strong>surface-overlay</strong> — Browser Layer panel</span>
+        <code>--surface-overlay · #2A3038</code>
+      </div>
+      <div class="layer-item" style="background: var(--surface-hover); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
+        <span><strong>surface-hover</strong> — Hover on all interactive surfaces</span>
+        <code>--surface-hover · #323940</code>
+      </div>
+    </div>
+
+    <!-- ── Borders ── -->
+    <div class="section-header" id="border">
+      <h2>Borders</h2>
+      <span class="token-count">2 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Structural, not visual. Borders separate without drawing attention. Subtle is the default. Strong appears only when an element needs emphasis.
+    </p>
+
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background:#363D44"></span></td>
+            <td><span class="token-name" data-copy="--border-subtle">--border-subtle</span></td>
+            <td class="hex-value">#363D44</td>
+            <td>Card borders, input borders, dividers</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#4A5259"></span></td>
+            <td><span class="token-name" data-copy="--border-strong">--border-strong</span></td>
+            <td class="hex-value">#4A5259</td>
+            <td>Active borders, separator lines</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── Text ── -->
+    <div class="section-header" id="text">
+      <h2>Text</h2>
+      <span class="token-count">4 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Three levels of hierarchy plus an on-accent variant. Primary is near-white for maximum contrast on dark surfaces. Tertiary is reserved for disabled and inactive states.
+    </p>
+
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th><th>Contrast</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background:#E8EAED"></span></td>
+            <td><span class="token-name" data-copy="--text-primary">--text-primary</span></td>
+            <td class="hex-value">#E8EAED</td>
+            <td>Body text, headings, chat messages</td>
+            <td><span class="contrast-badge contrast-aaa">~10:1 AAA</span></td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#9AA0A6"></span></td>
+            <td><span class="token-name" data-copy="--text-secondary">--text-secondary</span></td>
+            <td class="hex-value">#9AA0A6</td>
+            <td>Timestamps, helper text, placeholders</td>
+            <td><span class="contrast-badge contrast-aa">~5.5:1 AA</span></td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#6B7280"></span></td>
+            <td><span class="token-name" data-copy="--text-tertiary">--text-tertiary</span></td>
+            <td class="hex-value">#6B7280</td>
+            <td>Disabled text, inactive history</td>
+            <td><span class="contrast-badge contrast-aa">~3.5:1 AA</span></td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#1A1E21"></span></td>
+            <td><span class="token-name" data-copy="--text-on-accent">--text-on-accent</span></td>
+            <td class="hex-value">#1A1E21</td>
+            <td>Text on green accent (send button)</td>
+            <td><span class="contrast-badge contrast-na">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo-section" id="demos">
+      <div class="demo-title">In Context</div>
+      <div class="demo-box">
+        <div class="text-sample-block" style="width:100%">
+          <div class="primary" style="font-size:0.9375rem;margin-bottom:0.35rem">Deciding next browser action</div>
+          <div class="secondary" style="margin-bottom:0.25rem">Loop 3/12 · Analyzing page structure</div>
+          <div class="muted">08:05 PM · Connected to MiniMax 2.7</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Accent ── -->
+    <div class="section-header" id="accent">
+      <h2>Accent — Sage Green</h2>
+      <span class="token-count">4 tokens</span>
+    </div>
+    <p class="section-rationale">
+      A single green accent family. Calm enough for sustained reading, strong enough for action signals. Muted is for subtle backgrounds. Strong is the send button and active indicators. One accent, zero confusion.
+    </p>
+
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background:#8AB4A0"></span></td>
+            <td><span class="token-name" data-copy="--accent">--accent</span></td>
+            <td class="hex-value">#8AB4A0</td>
+            <td>Active nav, tab labels, links</td>
+            <td>Muted sage. Calm enough to read.</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#6BC49F"></span></td>
+            <td><span class="token-name" data-copy="--accent-strong">--accent-strong</span></td>
+            <td class="hex-value">#6BC49F</td>
+            <td>Send button, status dots, RUNNING</td>
+            <td>Strongest signal. Used sparingly.</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#3D5A4D"></span></td>
+            <td><span class="token-name" data-copy="--accent-muted">--accent-muted</span></td>
+            <td class="hex-value">#3D5A4D</td>
+            <td>Accent card background tint</td>
+            <td>Subtle highlight. Barely there.</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#7ECFAA"></span></td>
+            <td><span class="token-name" data-copy="--accent-hover">--accent-hover</span></td>
+            <td class="hex-value">#7ECFAA</td>
+            <td>Hover state on accent</td>
+            <td>Brighter. Invites interaction.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-title">Buttons in Context</div>
+      <div class="demo-box">
+        <button class="btn btn-accent">Send</button>
+        <button class="btn btn-outline">+ New</button>
+        <button class="btn btn-ghost">Open Sidebar</button>
+        <button class="btn btn-disabled" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- ── Semantic ── -->
+    <div class="section-header" id="semantic">
+      <h2>Semantic — Status Colors</h2>
+      <span class="token-count">5 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Success, running, and info all reuse the accent green — the system has ONE color language. Only warning (amber) and error (red) break from green. This is intentional. Cognitive load stays minimal.
+    </p>
+
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background:#6BC49F"></span></td>
+            <td><span class="token-name" data-copy="--status-success">--status-success</span></td>
+            <td class="hex-value">#6BC49F</td>
+            <td>DONE badge, active pulse dot</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#6BC49F"></span></td>
+            <td><span class="token-name" data-copy="--status-running">--status-running</span></td>
+            <td class="hex-value">#6BC49F</td>
+            <td>RUNNING badge background</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#8AB4A0"></span></td>
+            <td><span class="token-name" data-copy="--status-info">--status-info</span></td>
+            <td class="hex-value">#8AB4A0</td>
+            <td>System message label</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#F0B429"></span></td>
+            <td><span class="token-name" data-copy="--status-warning">--status-warning</span></td>
+            <td class="hex-value">#F0B429</td>
+            <td>Percentage indicator, attention</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#EF4444"></span></td>
+            <td><span class="token-name" data-copy="--status-error">--status-error</span></td>
+            <td class="hex-value">#EF4444</td>
+            <td>Error, critical</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-title">Status Badges</div>
+      <div class="demo-box">
+        <span class="badge badge-running">RUNNING</span>
+        <span class="badge badge-done">DONE</span>
+        <span class="badge badge-warning">14%</span>
+        <span class="badge badge-error">ERROR</span>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-title">Status Dots</div>
+      <div class="demo-box" style="gap:1.25rem;">
+        <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-dot dot-running"></span><span style="font-size:0.8125rem;color:var(--text-secondary)">Agent active</span></div>
+        <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-dot dot-warning"></span><span style="font-size:0.8125rem;color:var(--text-secondary)">High usage</span></div>
+        <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-dot dot-error"></span><span style="font-size:0.8125rem;color:var(--text-secondary)">Connection lost</span></div>
+      </div>
+    </div>
+
+    <!-- ── Chrome ── -->
+    <div class="section-header" id="chrome">
+      <h2>Chrome Integration</h2>
+      <span class="token-count">4 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Tokens for the Chromium browser shell. The tab bar, URL bar, and extension icons sit above the app content but share the same tonal language.
+    </p>
+
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background:#292D32"></span></td>
+            <td><span class="token-name" data-copy="--chrome-tab-bg">--chrome-tab-bg</span></td>
+            <td class="hex-value">#292D32</td>
+            <td>Tab bar background</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#1E2327"></span></td>
+            <td><span class="token-name" data-copy="--chrome-tab-active">--chrome-tab-active</span></td>
+            <td class="hex-value">#1E2327</td>
+            <td>Active tab (matches surface-deep)</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#1E2327"></span></td>
+            <td><span class="token-name" data-copy="--chrome-toolbar">--chrome-toolbar</span></td>
+            <td class="hex-value">#1E2327</td>
+            <td>URL bar area background</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#9AA0A6"></span></td>
+            <td><span class="token-name" data-copy="--chrome-icon">--chrome-icon</span></td>
+            <td class="hex-value">#9AA0A6</td>
+            <td>Extension icons, nav arrows</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-title">Chrome Mockup</div>
+      <div class="chrome-mock">
+        <div class="chrome-tab-bar">
+          <div class="chrome-tab active">ResonantOS</div>
+          <div class="chrome-tab">New Tab</div>
+          <div class="chrome-tab">+</div>
+        </div>
+        <div class="chrome-toolbar">
+          <span style="font-size:0.625rem;color:var(--chrome-icon)">← → ↻</span>
+          <div class="chrome-url">resonantos.local/dashboard</div>
+          <span style="font-size:0.625rem;color:var(--text-secondary);border:1px solid var(--border-subtle);padding:0.15rem 0.4rem;border-radius:var(--radius-sm);">✦ AI Mode</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Typography ── -->
+    <div class="section-header" id="typo">
+      <h2>Typography</h2>
+      <span class="token-count">9 type tokens</span>
+    </div>
+    <p class="section-rationale">
+      System fonts throughout. Inter for the hero wordmark. Monospace for data. No decorative type — every font choice serves readability at the pixel level.
+    </p>
+
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h4>Fonts</h4>
+        <div class="spec-row"><span class="spec-label">Display</span><span class="spec-value">Inter 800</span></div>
+        <div class="spec-row"><span class="spec-label">Headings</span><span class="spec-value">system-ui 600</span></div>
+        <div class="spec-row"><span class="spec-label">Body</span><span class="spec-value">system-ui 400</span></div>
+        <div class="spec-row"><span class="spec-label">Code</span><span class="spec-value">ui-monospace 400</span></div>
+      </div>
+      <div class="spec-card">
+        <h4>Type Scale</h4>
+        <div class="spec-row"><span class="spec-label">Display</span><span class="spec-value">48px / 800</span></div>
+        <div class="spec-row"><span class="spec-label">Heading-md</span><span class="spec-value">15px / 600</span></div>
+        <div class="spec-row"><span class="spec-label">Body</span><span class="spec-value">14px / 400</span></div>
+        <div class="spec-row"><span class="spec-label">Body-sm</span><span class="spec-value">13px / 400</span></div>
+        <div class="spec-row"><span class="spec-label">Label</span><span class="spec-value">11px / 600</span></div>
+        <div class="spec-row"><span class="spec-label">Label-sm</span><span class="spec-value">10px / 500</span></div>
+        <div class="spec-row"><span class="spec-label">Code</span><span class="spec-value">13px / 400 mono</span></div>
+        <div class="spec-row"><span class="spec-label">Nav-tab</span><span class="spec-value">14px / 500</span></div>
+        <div class="spec-row"><span class="spec-label">Button-label</span><span class="spec-value">13px / 500</span></div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-title">Type Specimen</div>
+      <div class="type-spec">
+        <div class="type-row">
+          <div class="type-sample" style="font-family:var(--font-sans);font-size:3rem;font-weight:800;letter-spacing:-0.03em;line-height:1.1;color:var(--text-primary)">ResonantOS</div>
+          <div class="type-meta">Display · Inter · 48px · 800 · -0.03em</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:system-ui;font-size:0.9375rem;font-weight:600;line-height:1.4;color:var(--text-primary)">Agent Control Panel</div>
+          <div class="type-meta">Heading-md · system-ui · 15px · 600</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:system-ui;font-size:0.875rem;font-weight:400;line-height:1.55;color:var(--text-primary)">The agent is analyzing the current page structure to determine the next browser action. This process may take a few seconds depending on the complexity of the DOM.</div>
+          <div class="type-meta">Body · system-ui · 14px · 400</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:system-ui;font-size:0.8125rem;font-weight:400;line-height:1.45;color:var(--text-secondary)">Card labels, history items, and descriptions appear at this size. Compact but readable.</div>
+          <div class="type-meta">Body-sm · system-ui · 13px · 400</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:system-ui;font-size:0.6875rem;font-weight:600;letter-spacing:0.05em;line-height:1.3;color:var(--text-secondary);text-transform:uppercase">HISTORY · AGENT CONTROL</div>
+          <div class="type-meta">Label · system-ui · 11px · 600 · 0.05em</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:var(--font-mono);font-size:0.8125rem;font-weight:400;line-height:1.5;color:var(--text-secondary)">job_8f2a9c · pos: 42.3601,-71.0589 · loop 3/12</div>
+          <div class="type-meta">Code · ui-monospace · 13px · 400</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Spacing ── -->
+    <div class="section-header" id="spacing">
+      <h2>Spacing</h2>
+      <span class="token-count">8 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Base unit: 8px with micro-steps at 2px and 4px. The system is dense — information-first — but never cramped. Dark surfaces need breathing room to signal quality.
+    </p>
+
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h4>Spacing Scale</h4>
+        <div class="spec-row"><span class="spec-label">--sp-1</span><span class="spec-value">2px</span></div>
+        <div class="spec-row"><span class="spec-label">--sp-2</span><span class="spec-value">4px</span></div>
+        <div class="spec-row"><span class="spec-label">--sp-3</span><span class="spec-value">8px</span></div>
+        <div class="spec-row"><span class="spec-label">--sp-4</span><span class="spec-value">12px</span></div>
+        <div class="spec-row"><span class="spec-label">--sp-5</span><span class="spec-value">16px</span></div>
+        <div class="spec-row"><span class="spec-label">--sp-6</span><span class="spec-value">24px</span></div>
+        <div class="spec-row"><span class="spec-label">--sp-7</span><span class="spec-value">32px</span></div>
+        <div class="spec-row"><span class="spec-label">--sp-8</span><span class="spec-value">48px</span></div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-title">Spacing Bars</div>
+      <div class="demo-box">
+        <div class="space-demo">
+          <div class="space-block" style="width:24px;height:2px">2</div>
+          <div class="space-block" style="width:24px;height:4px;opacity:0.85">4</div>
+          <div class="space-block" style="width:24px;height:8px;opacity:0.75">8</div>
+          <div class="space-block" style="width:24px;height:12px;opacity:0.65">12</div>
+          <div class="space-block" style="width:24px;height:16px;opacity:0.55">16</div>
+          <div class="space-block" style="width:24px;height:24px;opacity:0.45">24</div>
+          <div class="space-block" style="width:24px;height:32px;opacity:0.35">32</div>
+          <div class="space-block" style="width:24px;height:48px;opacity:0.25">48</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Radius ── -->
+    <div class="section-header" id="radius">
+      <h2>Border Radius</h2>
+      <span class="token-count">4 tokens</span>
+    </div>
+    <p class="section-rationale">
+      No rounded corners larger than 12px except circles. Sharp enough to feel like a terminal. Soft enough not to feel hostile. 4px for badges, 8px for cards, 12px for chat bubbles, full for avatars and send button.
+    </p>
+
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h4>Radius Scale</h4>
+        <div class="spec-row"><span class="spec-label">--radius-sm</span><span class="spec-value">4px</span></div>
+        <div class="spec-row"><span class="spec-label">--radius-md</span><span class="spec-value">8px</span></div>
+        <div class="spec-row"><span class="spec-label">--radius-lg</span><span class="spec-value">12px</span></div>
+        <div class="spec-row"><span class="spec-label">--radius-full</span><span class="spec-value">9999px</span></div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-title">Radius Demo</div>
+      <div class="demo-box" style="gap:1rem;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.35rem;">
+          <div style="width:40px;height:40px;background:var(--accent);border-radius:4px;"></div>
+          <span style="font-size:0.625rem;color:var(--text-tertiary);font-family:var(--font-mono);">4px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.35rem;">
+          <div style="width:40px;height:40px;background:var(--accent);border-radius:8px;"></div>
+          <span style="font-size:0.625rem;color:var(--text-tertiary);font-family:var(--font-mono);">8px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.35rem;">
+          <div style="width:40px;height:40px;background:var(--accent);border-radius:12px;"></div>
+          <span style="font-size:0.625rem;color:var(--text-tertiary);font-family:var(--font-mono);">12px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.35rem;">
+          <div style="width:40px;height:40px;background:var(--accent);border-radius:50%;"></div>
+          <span style="font-size:0.625rem;color:var(--text-tertiary);font-family:var(--font-mono);">full</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Elevation ── -->
+    <div class="section-header" id="elevation">
+      <h2>Elevation</h2>
+      <span class="token-count">4 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Depth by tonal layering is the default. Shadows appear only for overlaying panels, dropdowns, and card hover. The system is border-based, not shadow-based.
+    </p>
+
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h4>Shadow Tokens</h4>
+        <div class="spec-row"><span class="spec-label">--shadow-none</span><span class="spec-value">none</span></div>
+        <div class="spec-row"><span class="spec-label">--shadow-panel</span><span class="spec-value">0 0 20px rgba(0,0,0,0.3)</span></div>
+        <div class="spec-row"><span class="spec-label">--shadow-card</span><span class="spec-value">0 1px 3px rgba(0,0,0,0.15)</span></div>
+        <div class="spec-row"><span class="spec-label">--shadow-dropdown</span><span class="spec-value">0 4px 12px rgba(0,0,0,0.25)</span></div>
+      </div>
+    </div>
+
+    <!-- ── Motion ── -->
+    <div class="section-header" id="motion">
+      <h2>Motion</h2>
+      <span class="token-count">4 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Fast for micro-interactions (button hover, badge appear). Base for panel transitions. Slow for the Browser Layer slide-in. Pulse is infinite — the green dot that says "the agent is thinking."
+    </p>
+
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h4>Motion Tokens</h4>
+        <div class="spec-row"><span class="spec-label">--motion-fast</span><span class="spec-value">100ms ease-out</span></div>
+        <div class="spec-row"><span class="spec-label">--motion-base</span><span class="spec-value">200ms ease-out</span></div>
+        <div class="spec-row"><span class="spec-label">--motion-slow</span><span class="spec-value">350ms ease-in-out</span></div>
+        <div class="spec-row"><span class="spec-label">--motion-pulse</span><span class="spec-value">1.5s ease-in-out ∞</span></div>
+      </div>
+    </div>
+
+    <!-- ── Z-Index ── -->
+    <div class="section-header" id="zindex">
+      <h2>Z-Index</h2>
+      <span class="token-count">7 tokens</span>
+    </div>
+    <p class="section-rationale">
+      Layering hierarchy from page content (0) to Chromium chrome (100). Each step of 10 leaves room for intermediate layers. The input composer sits above tabs but below the Browser Layer panel.
+    </p>
+
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h4>Z-Index Stack</h4>
+        <div class="spec-row"><span class="spec-label">--z-base</span><span class="spec-value">0</span></div>
+        <div class="spec-row"><span class="spec-label">--z-sidebar</span><span class="spec-value">10</span></div>
+        <div class="spec-row"><span class="spec-label">--z-tabs</span><span class="spec-value">20</span></div>
+        <div class="spec-row"><span class="spec-label">--z-input</span><span class="spec-value">30</span></div>
+        <div class="spec-row"><span class="spec-label">--z-browser-layer</span><span class="spec-value">40</span></div>
+        <div class="spec-row"><span class="spec-label">--z-dropdown</span><span class="spec-value">50</span></div>
+        <div class="spec-row"><span class="spec-label">--z-chrome</span><span class="spec-value">100</span></div>
+      </div>
+    </div>
+
+    <!-- ── Contrast ── -->
+    <div class="section-header" id="contrast">
+      <h2>Contrast Reference</h2>
+    </div>
+    <p class="section-rationale">
+      All text meets WCAG AA on intended backgrounds. Tertiary text (~3.5:1) passes AA for large text and UI components. Focus ring is 2px solid accent with 2px offset.
+    </p>
+
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead><tr><th>Foreground</th><th>Background</th><th>Ratio</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--text-primary)">--text-primary (#E8EAED)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aaa">~10:1</span></td><td>AAA</td></tr>
+          <tr><td style="color:var(--text-secondary)">--text-secondary (#9AA0A6)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.5:1</span></td><td>AA</td></tr>
+          <tr><td style="color:var(--text-tertiary)">--text-tertiary (#6B7280)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~3.5:1</span></td><td>AA (large)</td></tr>
+          <tr><td style="color:var(--accent)">--accent (#8AB4A0)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~4.8:1</span></td><td>AA</td></tr>
+          <tr><td style="color:var(--accent-strong)">--accent-strong (#6BC49F)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.9:1</span></td><td>AA</td></tr>
+          <tr><td style="color:var(--status-warning)">--status-warning (#F0B429)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aaa">~10.8:1</span></td><td>AAA</td></tr>
+          <tr><td style="color:var(--status-error)">--status-error (#EF4444)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.7:1</span></td><td>AA</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── Naming ── -->
+    <div class="section-header" id="naming">
+      <h2>Token Naming Convention</h2>
+    </div>
+    <p class="section-rationale">
+      Flat, semantic naming. Category first, then variant, then state. No nesting. Machine-readable and human-scannable.
+    </p>
+
+    <div style="background:var(--guide-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1rem 1.25rem;margin:1rem 0;font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary);line-height:1.9;">
+      <div style="color:var(--accent);margin-bottom:0.35rem;font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.05em">Pattern:</div>
+      <div style="color:var(--text-primary);font-size:0.875rem;margin-bottom:0.75rem">--{category}-{variant}</div>
+      <div style="color:var(--text-tertiary);margin-bottom:0.35rem;font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.05em">Examples:</div>
+      <div>--surface-deepest</div>
+      <div>--text-secondary</div>
+      <div>--accent-strong</div>
+      <div>--sp-4</div>
+      <div>--radius-md</div>
+      <div>--motion-base</div>
+      <div>--z-browser-layer</div>
+    </div>
+
+    <!-- ── Design Rules ── -->
+    <div class="section-header" id="rules">
+      <h2>Design Rules</h2>
+    </div>
+    <p class="section-rationale">
+      Hard constraints from the community. Break them only with explicit justification.
+    </p>
+
+    <div class="dodont">
+      <div class="dodont-card do">
+        <h4>Do</h4>
+        <p>Keep it dark — no light theme. Use green accent for interactive/live elements only. Left-align sidebar text. Use uppercase + letter-spacing for section labels. Create depth by tonal layering, not shadows.</p>
+      </div>
+      <div class="dodont-card dont">
+        <h4>Don't</h4>
+        <p>Add colors beyond green accent without functional reason. Use shadows except for overlaying panels and dropdowns. Center-align body text. Use rounded corners larger than 12px except circles. Decorate without purpose.</p>
+      </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <div style="margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border-subtle);font-size:0.6875rem;color:var(--text-tertiary);display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
+      <span>ROSI Design System v0.2</span>
+      <span>Extracted from ResonantOS Browser community build · 2026-05-27</span>
+      <span>By Nami 🌊 + Claude UI extraction</span>
+    </div>
+
+  </div>
+</main>
+
+<button class="to-top" id="toTop" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<script>
+document.querySelectorAll('.token-name').forEach(el => {
+  el.addEventListener('click', () => {
+    const text = el.dataset.copy;
+    navigator.clipboard.writeText(text).then(() => {
+      el.classList.add('copied');
+      setTimeout(() => el.classList.remove('copied'), 1500);
+    });
+  });
+});
+
+const sections = document.querySelectorAll('[id]');
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+function updateActiveLink() {
+  let current = '';
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= 100) current = section.id;
+  });
+  sidebarLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateActiveLink);
+updateActiveLink();
+
+window.addEventListener('scroll', () => {
+  document.getElementById('toTop').classList.toggle('visible', scrollY > 500);
+});
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('visible');
+}
+
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 900) toggleSidebar();
+  });
+});
+</script>
+
+</body>
+</html>
