@@ -72,7 +72,7 @@
 ## Credits
 
 - **Michel Navarra** — Lead Designer
-- **Nami** — Orchestrator
+- **Maestro** — Orchestrator
 - **Sokar** — Design Architecture
 - **Luma** — Visual Guide
 - **Nstudio** — Build System
