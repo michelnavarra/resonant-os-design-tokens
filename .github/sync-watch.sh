@@ -1,23 +1,20 @@
 #!/bin/bash
 # ROSI Design Token Sync — monitors ResonantOS repos for CSS/design changes
-# Run by Nami cron job
+# Run by Maestro cron job
 
-REPO="ResonantOS/resonantos-vnext"
+REPO="ResonantOS/2.0.0-alpha"
 LOCAL_DIR="/Users/labmacbook/Nstudio/public-community/projects/resonant-os/design-system"
 STATE_FILE="$LOCAL_DIR/.sync-state.json"
-BRANCH="main"
+BRANCH="dev"
 
-# Files to monitor (CSS + key UI files)
+# Files to monitor (CSS + key UI files) — pivoted to browser-first architecture 2026-06-15
 WATCH_PATHS=(
-  "src/styles/base.css"
-  "src/styles/shell.css"
-  "src/modules/browser/browser.css"
-  "src/modules/chat/chat-rail.css"
-  "src/modules/chat/messages.css"
-  "src/modules/delegation/delegation.css"
-  "src/styles/workspace-cards.css"
-  "src/styles/responsive.css"
-  "docs/product/UX-001-resonantos-app-shell.md"
+  "browser-first/resonantos-side-panel-extension/src/main-workspace.css"
+  "browser-first/resonantos-side-panel-extension/src/side-panel.css"
+  "browser-first/resonantos-side-panel-extension/src/styles/main-workspace/base-rail.css"
+  "browser-first/resonantos-side-panel-extension/src/styles/main-workspace/workspace-modules.css"
+  "browser-first/resonantos-side-panel-extension/src/styles/side-panel/base-layout.css"
+  "browser-first/resonantos-side-panel-extension/src/styles/side-panel/messages.css"
   "docs/architecture/ADR-017-resonant-browser-addon.md"
 )
 
@@ -62,9 +59,9 @@ done
 # Update last check timestamp
 python3 -c "
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 with open('$STATE_FILE','r') as f: d=json.load(f)
-d['last_check']=datetime.utcnow().isoformat()+'Z'
+d['last_check']=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
 with open('$STATE_FILE','w') as f: json.dump(d,f,indent=2)
 "
 

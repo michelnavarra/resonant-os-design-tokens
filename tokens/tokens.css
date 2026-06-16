@@ -1,97 +1,137 @@
 /*
- * ROSI Design Tokens v0.2.0
- * Generated from tokens.json — DO NOT EDIT MANUALLY
- * Source: ResonantOS Browser Extension UI
- * Last updated: 2026-05-28
+ * ROSI Design Tokens v0.3.0
+ * Coherent Verdant, aligned palette drawn from v0.2 sage family and current dev team vibrant green.
+ * Path (c) alignment: docs and implementation converge on a single coherent palette.
  *
- * Usage: Import this file in your project.
- * All tokens are CSS custom properties on :root.
+ * Source: ResonantOS Browser Extension UI
+ * Last updated: 2026-06-15
+ * Supersedes: 0.2.0 (sage green on blue-gray)
+ *
+ * Usage: Import this file in your project. All tokens are CSS custom properties on :root.
+ * The dev team's base-rail.css variables map cleanly to these, see ui-extraction-browser-v3.md
+ * for the migration table.
  */
 
 :root {
-  /* ── Surfaces ────────────────────────────────── */
-  --rosi-surface-base:    #1A1E21;
-  --rosi-surface-raised:  #1E2327;
-  --rosi-surface-overlay: #262B30;
-  --rosi-surface-sunken:  #2A3038;
-  --rosi-surface-hover:   #323940;
+  /* ── Surfaces (green-warm dark base) ─────────── */
+  --rosi-surface-base:    #0F1411;
+  --rosi-surface-deep:    #0B100E;
+  --rosi-surface-raised:  rgba(20, 28, 24, 0.72);
+  --rosi-surface-overlay: rgba(28, 36, 31, 0.94);
+  --rosi-surface-sunken:  rgba(0, 0, 0, 0.20);
+  --rosi-surface-hover:   rgba(255, 255, 255, 0.055);
 
-  /* ── Borders ─────────────────────────────────── */
-  --rosi-border-default:  #323940;
-  --rosi-border-subtle:   #262B30;
-  --rosi-border-strong:   #6B7280;
+  /* ── Borders (calibrated green-tint alphas) ──── */
+  --rosi-border-subtle:   rgba(63, 178, 134, 0.14);
+  --rosi-border-default:  rgba(63, 178, 134, 0.20);
+  --rosi-border-strong:   rgba(63, 178, 134, 0.40);
+  --rosi-border-glow:     rgba(63, 178, 134, 0.55);
 
-  /* ── Text ────────────────────────────────────── */
-  --rosi-text-primary:    #E8EAED;
-  --rosi-text-secondary:  #9AA0A6;
-  --rosi-text-tertiary:   #6B7280;
-  --rosi-text-inverse:    #1A1E21;
+  /* ── Text (green-tinted hierarchy) ───────────── */
+  --rosi-text-primary:    #EAF1EC;
+  --rosi-text-secondary:  #A3B1A8;
+  --rosi-text-tertiary:   #6E7C73;
+  --rosi-text-on-accent:  #06110D;
 
-  /* ── Accent (Sage Green) ─────────────────────── */
-  --rosi-accent-default:  #8AB4A0;
-  --rosi-accent-bright:   #6BC49F;
-  --rosi-accent-vivid:    #7ECFAA;
-  --rosi-accent-dark:     #3D5A4D;
-  --rosi-accent-on:       #1A1E21;
+  /* ── Accent (Coherent Verdant, #3FB286) ─────── */
+  --rosi-accent-default:  #3FB286;
+  --rosi-accent-bright:   #5DCE9F;
+  --rosi-accent-strong:   #2DA176;
+  --rosi-accent-muted:    rgba(63, 178, 134, 0.12);
+  --rosi-accent-tint:     rgba(63, 178, 134, 0.08);
+  --rosi-accent-glow:     rgba(63, 178, 134, 0.18);
+  --rosi-accent-on:       #06110D;
 
-  /* ── Semantic ────────────────────────────────── */
-  --rosi-success:         #8AB4A0;
-  --rosi-warning:         #E5A84B;
-  --rosi-error:           #E06C75;
-  --rosi-info:            #8AB4A0;
+  /* ── Semantic (success=accent, info=cool blue) ─ */
+  --rosi-status-success:  #3FB286;
+  --rosi-status-running:  #3FB286;
+  --rosi-status-info:     #5BA3C7;
+  --rosi-status-warning:  #E5A84B;
+  --rosi-status-error:    #E06C75;
+  --rosi-status-neutral:  #9AA0A6;
 
-  /* ── Chrome ──────────────────────────────────── */
-  --rosi-chrome-tab-bar:  #292D32;
-  --rosi-chrome-tab-active: #1E2327;
-  --rosi-chrome-toolbar:  #1E2327;
+  /* ── Chrome (browser shell integration) ──────── */
+  --rosi-chrome-tab-bar:    #1E2327;
+  --rosi-chrome-tab-active: #161B17;
+  --rosi-chrome-toolbar:    #161B17;
 
   /* ── Typography ──────────────────────────────── */
   --rosi-font-system:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --rosi-font-display:    'Inter', system-ui, -apple-system, sans-serif;
+  --rosi-font-mono:       ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
 
-  --rosi-text-xs:         0.75rem;    /* 12px */
-  --rosi-text-sm:         0.875rem;   /* 14px */
-  --rosi-text-base:       1rem;       /* 16px */
-  --rosi-text-lg:         1.125rem;   /* 18px */
-  --rosi-text-xl:         1.25rem;    /* 20px */
-  --rosi-text-2xl:        1.5rem;     /* 24px */
-  --rosi-text-3xl:        1.875rem;   /* 30px */
+  --rosi-text-xs:         0.6875rem;          /* 11px */
+  --rosi-text-sm:         0.8125rem;          /* 13px */
+  --rosi-text-base:       0.875rem;           /* 14px */
+  --rosi-text-lg:         1.125rem;           /* 18px */
+  --rosi-text-xl:         1.35rem;            /* ~22px */
+  --rosi-text-2xl:        1.75rem;            /* 28px */
+  --rosi-text-3xl:        clamp(2rem, 4vw, 4.4rem);
 
   --rosi-font-normal:     400;
   --rosi-font-medium:     500;
   --rosi-font-semibold:   600;
   --rosi-font-bold:       700;
+  --rosi-font-heavy:      800;
+  --rosi-font-extrabold:  950;
 
-  --rosi-leading-tight:   1.25;
-  --rosi-leading-normal:  1.5;
-  --rosi-leading-relaxed: 1.75;
+  --rosi-leading-tight:   0.95;
+  --rosi-leading-snug:    1.25;
+  --rosi-leading-normal:  1.45;
+  --rosi-leading-relaxed: 1.6;
 
-  /* ── Spacing ─────────────────────────────────── */
-  --rosi-space-xs:        0.25rem;    /* 4px */
-  --rosi-space-sm:        0.5rem;     /* 8px */
-  --rosi-space-md:        0.75rem;    /* 12px */
-  --rosi-space-base:      1rem;       /* 16px */
-  --rosi-space-lg:        1.5rem;     /* 24px */
-  --rosi-space-xl:        2rem;       /* 32px */
-  --rosi-space-2xl:       3rem;       /* 48px */
-  --rosi-space-3xl:       4rem;       /* 64px */
+  --rosi-tracking-tight:  -0.065em;
+  --rosi-tracking-normal: 0;
+  --rosi-tracking-wide:   0.05em;
+  --rosi-tracking-wider:  0.14em;
+
+  /* ── Spacing (4-px base) ─────────────────────── */
+  --rosi-space-0:         0;
+  --rosi-space-1:         0.25rem;            /* 4px */
+  --rosi-space-2:         0.5rem;             /* 8px */
+  --rosi-space-3:         0.75rem;            /* 12px */
+  --rosi-space-4:         1rem;               /* 16px */
+  --rosi-space-5:         1.5rem;             /* 24px */
+  --rosi-space-6:         2rem;               /* 32px */
+  --rosi-space-7:         3rem;               /* 48px */
+  --rosi-space-8:         4rem;               /* 64px */
 
   /* ── Border Radius ───────────────────────────── */
-  --rosi-radius-sm:       0.375rem;   /* 6px */
-  --rosi-radius-base:     0.5rem;     /* 8px */
-  --rosi-radius-lg:       0.75rem;    /* 12px */
-  --rosi-radius-xl:       1rem;       /* 16px */
+  --rosi-radius-xs:       0.5rem;             /* 8px */
+  --rosi-radius-sm:       0.75rem;            /* 12px */
+  --rosi-radius-base:     1rem;               /* 16px */
+  --rosi-radius-lg:       1.25rem;            /* 20px */
+  --rosi-radius-xl:       1.375rem;           /* 22px */
+  --rosi-radius-2xl:      1.5rem;             /* 24px */
+  --rosi-radius-full:     9999px;
 
-  /* ── Elevation (Tonal — use sparingly) ───────── */
+  /* ── Sizing ──────────────────────────────────── */
+  --rosi-icon-xs:         12px;
+  --rosi-icon-sm:         14px;
+  --rosi-icon-md:         16px;
+  --rosi-icon-lg:         20px;
+  --rosi-icon-xl:         24px;
+
+  --rosi-avatar-sm:       20px;
+  --rosi-avatar-md:       30px;
+  --rosi-avatar-lg:       34px;
+
+  --rosi-send-btn:        38px;
+  --rosi-icon-button:     34px;
+  --rosi-control-sm:      32px;
+  --rosi-control-md:      40px;
+  --rosi-touch-min:       42px;
+
+  /* ── Elevation (Tonal, use sparingly) ───────── */
   --rosi-shadow-0:        none;
   --rosi-shadow-1:        0 1px 2px rgba(0,0,0,0.1);
-  --rosi-shadow-2:        0 2px 8px rgba(0,0,0,0.15);
-  --rosi-shadow-3:        0 4px 16px rgba(0,0,0,0.2);
+  --rosi-shadow-2:        0 18px 50px rgba(0,0,0,0.34);
+  --rosi-shadow-3:        0 24px 90px rgba(0,0,0,0.55);
 
   /* ── Motion ──────────────────────────────────── */
-  --rosi-duration-fast:       150ms;
-  --rosi-duration-normal:     250ms;
-  --rosi-duration-slow:       400ms;
+  --rosi-duration-fast:       120ms;
+  --rosi-duration-normal:     200ms;
+  --rosi-duration-slow:       350ms;
   --rosi-duration-deliberate: 600ms;
 
   --rosi-ease-default:    cubic-bezier(0.4, 0, 0.2, 1);
@@ -101,10 +141,9 @@
 
   /* ── Z-Index ─────────────────────────────────── */
   --rosi-z-base:          0;
-  --rosi-z-dropdown:      100;
-  --rosi-z-sticky:        200;
-  --rosi-z-overlay:       300;
-  --rosi-z-modal:         400;
-  --rosi-z-popover:       500;
-  --rosi-z-toast:         600;
+  --rosi-z-rail:          10;
+  --rosi-z-sticky:        20;
+  --rosi-z-composer:      30;
+  --rosi-z-dropdown:      40;
+  --rosi-z-modal:         1000;
 }

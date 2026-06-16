@@ -1,7 +1,7 @@
 # ROSI Color Palette v0.2 — ResonantOS Design System
 
 **Created:** 2026-05-27
-**Author:** Nami 🌊 (from ResonantOS Browser community build + Claude UI extraction)
+**Author:** Maestro 🌊 (from ResonantOS Browser community build + Claude UI extraction)
 **Status:** CANONICAL — extracted directly from the new ResonantOS Browser
 **Identity:** Functional minimalism — mission control terminal, dense with information, calm in color
 
@@ -206,6 +206,6 @@ For the Chromium browser shell:
 
 ---
 
-*Extracted by Nami from ResonantOS Browser community build + Claude UI extraction (2026-05-27)*
+*Extracted by Maestro from ResonantOS Browser community build + Claude UI extraction (2026-05-27)*
 *Reference screenshots: screenshot01-browser-home.png, screenshot04-browser-agent.png*
 *Next: Luma builds HTML guide → canonical tokens.json → handoff to dev team*

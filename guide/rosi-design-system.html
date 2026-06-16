@@ -3,13 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ROSI Design System — ResonantOS Browser</title>
+<title>ROSI Design System — ResonantOS Browser · 5-Direction Comparison</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* ── Base ── */
+/* Defaults: Direction A (Coherent Verdant). Other directions override via :root[data-palette]. */
 :root {
-  /* ROSI v0.2 — ResonantOS Browser Tokens */
+  /* ROSI v0.3 — ResonantOS Browser Tokens, Direction A default */
+  --surface-deepest: #0F1411;
+  --surface-deep: #0B100E;
+  --surface-raised: rgba(20, 28, 24, 0.72);
+  --surface-overlay: rgba(28, 36, 31, 0.94);
+  --surface-hover: rgba(255, 255, 255, 0.055);
+  --border-subtle: rgba(63, 178, 134, 0.14);
+  --border-strong: rgba(63, 178, 134, 0.40);
+  --text-primary: #EAF1EC;
+  --text-secondary: #A3B1A8;
+  --text-tertiary: #6E7C73;
+  --text-on-accent: #06110D;
+  --accent: #3FB286;
+  --accent-strong: #2DA176;
+  --accent-muted: rgba(63, 178, 134, 0.12);
+  --accent-hover: #5DCE9F;
+  --status-success: #3FB286;
+  --status-running: #3FB286;
+  --status-info: #5BA3C7;
+  --status-warning: #E5A84B;
+  --status-error: #E06C75;
+  --chrome-tab-bg: #161B17;
+  --chrome-tab-active: #0F1411;
+  --chrome-toolbar: #161B17;
+  --chrome-icon: #A3B1A8;
+}
+/* ── Direction B: Lean Implementation (current dev team phosphor) ── */
+:root[data-palette="b"] {
+  --surface-deepest: #070a08;
+  --surface-deep: #050706;
+  --surface-raised: rgba(17, 22, 19, 0.86);
+  --surface-overlay: rgba(22, 28, 24, 0.94);
+  --surface-hover: rgba(255, 255, 255, 0.045);
+  --border-subtle: rgba(148, 255, 198, 0.13);
+  --border-strong: rgba(36, 209, 143, 0.46);
+  --text-primary: #EEF7F0;
+  --text-secondary: #909D95;
+  --text-tertiary: #5C6960;
+  --text-on-accent: #06110D;
+  --accent: #24D18F;
+  --accent-strong: #18BD7D;
+  --accent-muted: rgba(36, 209, 143, 0.12);
+  --accent-hover: #2DE89D;
+  --status-success: #24D18F;
+  --status-running: #24D18F;
+  --status-info: #5BA3C7;
+  --status-warning: #E5A84B;
+  --status-error: #E06C75;
+  --chrome-tab-bg: #0B100D;
+  --chrome-tab-active: #070A08;
+  --chrome-toolbar: #0B100D;
+  --chrome-icon: #909D95;
+}
+/* ── Direction C: Lean Documentation (v0.2 sage on blue-gray) ── */
+:root[data-palette="c"] {
   --surface-deepest: #1A1E21;
   --surface-deep: #1E2327;
   --surface-raised: #262B30;
@@ -34,7 +89,31 @@
   --chrome-tab-active: #1E2327;
   --chrome-toolbar: #1E2327;
   --chrome-icon: #9AA0A6;
+}
+/* ── Direction D: Mint Cyan (cool departure) — STUB ── */
+/* Accent and base only. Full surface/text/status tokens pending v3 doc update. */
+:root[data-palette="d"] {
+  --surface-deepest: #0E1416;
+  --accent: #4DC9C9;
+  --accent-strong: #2DA8A8;
+  --accent-muted: rgba(77, 201, 201, 0.12);
+  --accent-hover: #6CDCDC;
+  --status-success: #4DC9C9;
+  --status-running: #4DC9C9;
+}
+/* ── Direction E: Warm Amber (warm departure) — STUB ── */
+/* Accent and base only. Full surface/text/status tokens pending v3 doc update. */
+:root[data-palette="e"] {
+  --surface-deepest: #14110C;
+  --accent: #E0A659;
+  --accent-strong: #B5833A;
+  --accent-muted: rgba(224, 166, 89, 0.14);
+  --accent-hover: #EFB873;
+  --status-success: #E0A659;
+  --status-running: #E0A659;
+}
 
+:root {
   /* Spacing */
   --sp-1: 2px;
   --sp-2: 4px;
@@ -57,10 +136,10 @@
   --shadow-card: 0 1px 3px rgba(0,0,0,0.15);
   --shadow-dropdown: 0 4px 12px rgba(0,0,0,0.25);
 
-  /* Guide chrome — readable blue-gray, not too dark */
-  --guide-bg: #1E2327;
-  --guide-surface: #262B30;
-  --guide-surface-hover: #2E343C;
+  /* Guide chrome — tracks the active palette's surface ramp */
+  --guide-bg: var(--surface-deepest);
+  --guide-surface: var(--surface-raised);
+  --guide-surface-hover: var(--surface-hover);
 
   /* Layout */
   --sidebar-w: 16rem;
@@ -85,6 +164,75 @@ body {
 ::-webkit-scrollbar-track { background: var(--guide-bg); }
 ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ── Palette switcher (header) ── */
+.palette-switch {
+  display: flex; gap: 0.25rem; align-items: center;
+  background: var(--guide-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 0.2rem;
+}
+.palette-switch-label {
+  font-size: 0.625rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  padding: 0 0.5rem 0 0.625rem;
+  font-family: var(--font-sans);
+}
+.palette-pill {
+  appearance: none; background: transparent;
+  border: none; cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem; font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0.3rem 0.625rem;
+  border-radius: 9999px;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: all 0.12s ease;
+  letter-spacing: 0.01em;
+}
+.palette-pill:hover {
+  color: var(--text-primary);
+  background: var(--surface-hover);
+}
+.palette-pill[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+.palette-pill.is-stub .pill-name::after {
+  content: ' *';
+  font-weight: 400;
+  opacity: 0.7;
+}
+.palette-pill.is-stub[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  position: relative;
+}
+.palette-pill.is-stub[aria-pressed="true"]::before {
+  content: 'STUB';
+  position: absolute;
+  top: -6px; right: -6px;
+  font-size: 0.5rem; font-weight: 700;
+  letter-spacing: 0.05em;
+  background: var(--status-warning);
+  color: #1A1408;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-family: var(--font-sans);
+}
+.palette-pill .pill-letter {
+  font-weight: 700; font-size: 0.75rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+}
+.palette-pill .pill-name {
+  font-size: 0.6875rem;
+}
+@media (max-width: 900px) {
+  .palette-switch { display: none; }
+}
 
 /* ── Header ── */
 .header {
@@ -234,6 +382,7 @@ body {
   border-bottom: 1px solid var(--border-subtle);
   white-space: nowrap;
 }
+.token-table th:first-child, .token-table td:first-child { width: 3.5rem; padding-left: 0.875rem; padding-right: 0.5rem; }
 .token-table th {
   background: var(--guide-surface);
   color: var(--text-secondary); font-weight: 600; font-size: 0.6875rem;
@@ -259,8 +408,9 @@ body {
 .swatch {
   width: 2rem; height: 2rem; border-radius: var(--radius-sm);
   display: inline-block; vertical-align: middle;
-  border: 1px solid var(--border-subtle); position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.18); position: relative;
   cursor: pointer; transition: transform 0.15s;
+  flex-shrink: 0;
 }
 .swatch:hover { transform: scale(1.08); }
 .hex-value {
@@ -476,6 +626,100 @@ body {
 .to-top.visible { opacity: 1; }
 .to-top:hover { background: var(--guide-surface-hover); border-color: var(--accent); }
 
+/* ── Why these 5 directions ── */
+.why-five {
+  margin: 2rem 0 1.5rem;
+  padding: 1.5rem;
+  background: var(--guide-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+}
+.why-five h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.why-intro {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.why-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.why-list li {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.012);
+}
+.why-letter {
+  width: 1.85rem; height: 1.85rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 0.4rem;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+}
+.why-body { min-width: 0; }
+.why-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  margin-bottom: 0.2rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.why-stub {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  background: var(--status-warning);
+  color: #1A1408;
+  text-transform: uppercase;
+  font-family: var(--font-sans);
+}
+.why-list p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.why-list p code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+.why-footer {
+  margin: 1rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+.why-footer strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
 /* ── Summary Grid ── */
 .summary-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
@@ -505,7 +749,14 @@ body {
     <div class="brand-mark">R</div>
     <span>ROSI Design System</span>
   </a>
-  <div class="header-meta">v0.2 · 60 tokens</div>
+  <div class="palette-switch" role="group" aria-label="Palette direction">
+    <span class="palette-switch-label">Palette</span>
+    <button class="palette-pill" data-palette="a" aria-pressed="true"  title="Coherent Verdant — recommended"><span class="pill-letter">A</span><span class="pill-name">Verdant</span></button>
+    <button class="palette-pill" data-palette="b" aria-pressed="false" title="Lean Implementation — current dev team phosphor"><span class="pill-letter">B</span><span class="pill-name">Phosphor</span></button>
+    <button class="palette-pill" data-palette="c" aria-pressed="false" title="Lean Documentation — v0.2 sage on blue-gray"><span class="pill-letter">C</span><span class="pill-name">Sage</span></button>
+    <button class="palette-pill is-stub" data-palette="d" aria-pressed="false" title="Mint Cyan — stub (accent and base only; full token set pending v3 doc update)"><span class="pill-letter">D</span><span class="pill-name">Mint*</span></button>
+    <button class="palette-pill is-stub" data-palette="e" aria-pressed="false" title="Warm Amber — stub (accent and base only; full token set pending v3 doc update)"><span class="pill-letter">E</span><span class="pill-name">Amber*</span></button>
+  </div>
   <button class="mobile-toggle" onclick="toggleSidebar()" aria-label="Toggle navigation" style="display:none">
     <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -517,6 +768,7 @@ body {
   <div class="sidebar-group">
     <div class="sidebar-group-title">Guide</div>
     <a class="sidebar-link active" href="#overview">Overview</a>
+    <a class="sidebar-link" href="#why-five">Why these 5</a>
     <a class="sidebar-link" href="#base">Base &amp; Surfaces</a>
     <a class="sidebar-link" href="#border">Borders</a>
     <a class="sidebar-link" href="#text">Text</a>
@@ -553,7 +805,8 @@ body {
       <h1>ROSI Design System</h1>
       <p class="hero-desc">
         Functional minimalism — a mission control terminal, dense with information, calm in color.
-        Blue-gray surfaces. A single muted sage green accent. Depth through tonal layering, not shadows.
+        Use the palette switcher in the header to compare all five directions against the same component demos.
+        Default is Direction A (Coherent Verdant), the recommended aligned palette.
       </p>
       <div class="hero-mood">
         <span class="mood-tag">Functional</span>
@@ -561,30 +814,91 @@ body {
         <span class="mood-tag">Calm</span>
         <span class="mood-tag">Dense</span>
         <span class="mood-tag">Dark Only</span>
+        <span class="mood-tag">5-Way Compare</span>
       </div>
     </section>
 
     <div class="callout">
       <div class="callout-icon">✦</div>
       <div>
-        <strong>Dark at all times — no light theme.</strong> The system has ONE color language: blue-gray neutrals + sage green accent. Only warning (amber) and error (red) break from green. Every element earns its place.
+        <strong>5 directions, 1 comparison surface.</strong> All component demos (buttons, badges, surfaces, status) re-render live when you pick a palette. The structure is identical across directions so the choice is honest: only the colors move.
       </div>
     </div>
 
+    <div class="callout stub-banner" id="stub-banner" style="display:none">
+      <div class="callout-icon" style="background:var(--status-warning);color:#1A1408">!</div>
+      <div>
+        <strong>Stub palette: D (Mint Cyan) or E (Warm Amber).</strong> These directions are defined for accent and base only; full surface, text, and status token sets are pending the v3 doc update. Buttons, badges, and accents render with the new color; the rest of the system uses the default Coherent Verdant values until the gap is filled. Pick A, B, or C for a complete comparison.
+      </div>
+    </div>
+
+    <!-- ── Why these 5 directions ── -->
+    <section class="why-five" id="why-five">
+      <h2>Why these 5 directions</h2>
+      <p class="why-intro">
+        The five palettes are not five random options. They tell a story about where the design system
+        came from, where it is now, and where it could go. The switcher is a comparison tool, not a
+        menu of finished options.
+      </p>
+
+      <ol class="why-list">
+        <li>
+          <div class="why-letter">A</div>
+          <div class="why-body">
+            <div class="why-name">Coherent Verdant</div>
+            <p>The recommendation. A calibrated middle ground between the v0.2 sage family and the dev team's current phosphor. New accent <code>#3FB286</code> on a green-warm dark base <code>#0F1411</code>. AAA contrast on primary text and accent pairings.</p>
+          </div>
+        </li>
+        <li>
+          <div class="why-letter">B</div>
+          <div class="why-body">
+            <div class="why-name">Lean Implementation</div>
+            <p>What the dev team is actually shipping right now. Vibrant green <code>#24D18F</code> on a near-black base. The implementation drifted from the v0.2 documentation.</p>
+          </div>
+        </li>
+        <li>
+          <div class="why-letter">C</div>
+          <div class="why-body">
+            <div class="why-name">Lean Documentation</div>
+            <p>What the v0.2 documentation says we ship. Sage <code>#8AB4A0</code> on blue-gray <code>#1A1E21</code>. The documentation and the implementation never agreed.</p>
+          </div>
+        </li>
+        <li>
+          <div class="why-letter">D</div>
+          <div class="why-body">
+            <div class="why-name">Mint Cyan <span class="why-stub">stub</span></div>
+            <p>A cool departure. Mint <code>#4DC9C9</code> on a near-black teal base. Use this direction if Coherent Verdant reads too warm for the workspace. Full token set pending the v3 doc update.</p>
+          </div>
+        </li>
+        <li>
+          <div class="why-letter">E</div>
+          <div class="why-body">
+            <div class="why-name">Warm Amber <span class="why-stub">stub</span></div>
+            <p>A warm departure. Amber <code>#E0A659</code> on a warm dark base. Use this direction if Coherent Verdant reads too cool. Full token set pending the v3 doc update.</p>
+          </div>
+        </li>
+      </ol>
+
+      <p class="why-footer">
+        The real choice is between <strong>A</strong>, <strong>D</strong>, and <strong>E</strong>.
+        B and C are included so the drift is visible.
+      </p>
+    </section>
+
     <!-- ── Summary ── -->
     <div class="summary-grid" id="summary">
-      <div class="summary-card"><h4>Surface</h4><div class="count">05</div><p>Blue-gray tonal layering</p></div>
-      <div class="summary-card"><h4>Border</h4><div class="count">02</div><p>Structural, not visual</p></div>
+      <div class="summary-card"><h4>Surface</h4><div class="count">05</div><p>Tonal layering (5 ramps)</p></div>
+      <div class="summary-card"><h4>Border</h4><div class="count">04</div><p>Subtle to glow, calibrated alphas</p></div>
       <div class="summary-card"><h4>Text</h4><div class="count">04</div><p>Primary, secondary, tertiary, on-accent</p></div>
-      <div class="summary-card"><h4>Accent</h4><div class="count">04</div><p>Sage green family</p></div>
+      <div class="summary-card"><h4>Accent</h4><div class="count">06</div><p>Default, strong, bright, muted, tint, glow</p></div>
       <div class="summary-card"><h4>Semantic</h4><div class="count">05</div><p>Status + warning + error</p></div>
       <div class="summary-card"><h4>Chrome</h4><div class="count">04</div><p>Browser shell integration</p></div>
-      <div class="summary-card"><h4>Typography</h4><div class="count">09</div><p>Display to code</p></div>
-      <div class="summary-card"><h4>Spacing</h4><div class="count">08</div><p>2px to 48px</p></div>
-      <div class="summary-card"><h4>Radius</h4><div class="count">04</div><p>4px, 8px, 12px, full</p></div>
-      <div class="summary-card"><h4>Elevation</h4><div class="count">04</div><p>Depth via shadow</p></div>
-      <div class="summary-card"><h4>Motion</h4><div class="count">04</div><p>100ms to 1.5s</p></div>
-      <div class="summary-card"><h4>Z-Index</h4><div class="count">07</div><p>Layering hierarchy</p></div>
+      <div class="summary-card"><h4>Typography</h4><div class="count">07</div><p>Display to code</p></div>
+      <div class="summary-card"><h4>Spacing</h4><div class="count">08</div><p>4px to 64px</p></div>
+      <div class="summary-card"><h4>Radius</h4><div class="count">07</div><p>8px to 24px, full</p></div>
+      <div class="summary-card"><h4>Elevation</h4><div class="count">04</div><p>Tonal + shadow when needed</p></div>
+      <div class="summary-card"><h4>Motion</h4><div class="count">04</div><p>120ms to 600ms</p></div>
+      <div class="summary-card"><h4>Z-Index</h4><div class="count">06</div><p>Base to modal</p></div>
     </div>
 
     <!-- ── Base Surfaces ── -->
@@ -593,29 +907,29 @@ body {
       <span class="token-count">5 tokens</span>
     </div>
     <p class="section-rationale">
-      Blue-gray neutrals with warm undertones. Five tonal layers create depth without decoration. Darkest is the browser body. Each step lighter signals elevation. No shadows needed for basic hierarchy.
+      Five tonal layers create depth without decoration. Darkest is the browser body. Each step lighter signals elevation. No shadows needed for basic hierarchy. Hex labels in the layer stack update live with the selected palette.
     </p>
 
     <div class="layer-stack">
       <div class="layer-item" style="background: var(--surface-deepest); color: var(--text-primary);">
         <span><strong>surface-deepest</strong> — Browser body, main content</span>
-        <code>--surface-deepest · #1A1E21</code>
+        <code data-token="--surface-deepest">--surface-deepest · —</code>
       </div>
       <div class="layer-item" style="background: var(--surface-deep); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
         <span><strong>surface-deep</strong> — Sidebar, chat area</span>
-        <code>--surface-deep · #1E2327</code>
+        <code data-token="--surface-deep">--surface-deep · —</code>
       </div>
       <div class="layer-item" style="background: var(--surface-raised); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
         <span><strong>surface-raised</strong> — Cards, inputs, containers</span>
-        <code>--surface-raised · #262B30</code>
+        <code data-token="--surface-raised">--surface-raised · —</code>
       </div>
       <div class="layer-item" style="background: var(--surface-overlay); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
         <span><strong>surface-overlay</strong> — Browser Layer panel</span>
-        <code>--surface-overlay · #2A3038</code>
+        <code data-token="--surface-overlay">--surface-overlay · —</code>
       </div>
       <div class="layer-item" style="background: var(--surface-hover); color: var(--text-primary); border-top:1px solid var(--border-subtle);">
         <span><strong>surface-hover</strong> — Hover on all interactive surfaces</span>
-        <code>--surface-hover · #323940</code>
+        <code data-token="--surface-hover">--surface-hover · —</code>
       </div>
     </div>
 
@@ -633,15 +947,15 @@ body {
         <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th></tr></thead>
         <tbody>
           <tr>
-            <td><span class="swatch" style="background:#363D44"></span></td>
+            <td><span class="swatch live-swatch" data-token="--border-subtle" style="background:var(--border-subtle)"></span></td>
             <td><span class="token-name" data-copy="--border-subtle">--border-subtle</span></td>
-            <td class="hex-value">#363D44</td>
+            <td class="hex-value live-hex-value" data-token="--border-subtle">—</td>
             <td>Card borders, input borders, dividers</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#4A5259"></span></td>
+            <td><span class="swatch live-swatch" data-token="--border-strong" style="background:var(--border-strong)"></span></td>
             <td><span class="token-name" data-copy="--border-strong">--border-strong</span></td>
-            <td class="hex-value">#4A5259</td>
+            <td class="hex-value live-hex-value" data-token="--border-strong">—</td>
             <td>Active borders, separator lines</td>
           </tr>
         </tbody>
@@ -662,30 +976,30 @@ body {
         <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th><th>Contrast</th></tr></thead>
         <tbody>
           <tr>
-            <td><span class="swatch" style="background:#E8EAED"></span></td>
+            <td><span class="swatch live-swatch" data-token="--text-primary" style="background:var(--text-primary)"></span></td>
             <td><span class="token-name" data-copy="--text-primary">--text-primary</span></td>
-            <td class="hex-value">#E8EAED</td>
+            <td class="hex-value live-hex-value" data-token="--text-primary">—</td>
             <td>Body text, headings, chat messages</td>
             <td><span class="contrast-badge contrast-aaa">~10:1 AAA</span></td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#9AA0A6"></span></td>
+            <td><span class="swatch live-swatch" data-token="--text-secondary" style="background:var(--text-secondary)"></span></td>
             <td><span class="token-name" data-copy="--text-secondary">--text-secondary</span></td>
-            <td class="hex-value">#9AA0A6</td>
+            <td class="hex-value live-hex-value" data-token="--text-secondary">—</td>
             <td>Timestamps, helper text, placeholders</td>
             <td><span class="contrast-badge contrast-aa">~5.5:1 AA</span></td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#6B7280"></span></td>
+            <td><span class="swatch live-swatch" data-token="--text-tertiary" style="background:var(--text-tertiary)"></span></td>
             <td><span class="token-name" data-copy="--text-tertiary">--text-tertiary</span></td>
-            <td class="hex-value">#6B7280</td>
+            <td class="hex-value live-hex-value" data-token="--text-tertiary">—</td>
             <td>Disabled text, inactive history</td>
             <td><span class="contrast-badge contrast-aa">~3.5:1 AA</span></td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#1A1E21"></span></td>
+            <td><span class="swatch live-swatch" data-token="--text-on-accent" style="background:var(--text-on-accent)"></span></td>
             <td><span class="token-name" data-copy="--text-on-accent">--text-on-accent</span></td>
-            <td class="hex-value">#1A1E21</td>
+            <td class="hex-value live-hex-value" data-token="--text-on-accent">—</td>
             <td>Text on green accent (send button)</td>
             <td><span class="contrast-badge contrast-na">—</span></td>
           </tr>
@@ -706,11 +1020,11 @@ body {
 
     <!-- ── Accent ── -->
     <div class="section-header" id="accent">
-      <h2>Accent — Sage Green</h2>
+      <h2>Accent — Active Palette</h2>
       <span class="token-count">4 tokens</span>
     </div>
     <p class="section-rationale">
-      A single green accent family. Calm enough for sustained reading, strong enough for action signals. Muted is for subtle backgrounds. Strong is the send button and active indicators. One accent, zero confusion.
+      A single accent family. Calm enough for sustained reading, strong enough for action signals. Muted is for subtle backgrounds. Strong is the send button and active indicators. One accent, zero confusion. Values below update with the active palette.
     </p>
 
     <div class="token-table-wrap">
@@ -718,30 +1032,30 @@ body {
         <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th><th>Why</th></tr></thead>
         <tbody>
           <tr>
-            <td><span class="swatch" style="background:#8AB4A0"></span></td>
+            <td><span class="swatch live-swatch" data-token="--accent" style="background:var(--accent)"></span></td>
             <td><span class="token-name" data-copy="--accent">--accent</span></td>
-            <td class="hex-value">#8AB4A0</td>
+            <td class="hex-value live-hex-value" data-token="--accent">—</td>
             <td>Active nav, tab labels, links</td>
-            <td>Muted sage. Calm enough to read.</td>
+            <td>Calm enough to read.</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#6BC49F"></span></td>
+            <td><span class="swatch live-swatch" data-token="--accent-strong" style="background:var(--accent-strong)"></span></td>
             <td><span class="token-name" data-copy="--accent-strong">--accent-strong</span></td>
-            <td class="hex-value">#6BC49F</td>
+            <td class="hex-value live-hex-value" data-token="--accent-strong">—</td>
             <td>Send button, status dots, RUNNING</td>
             <td>Strongest signal. Used sparingly.</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#3D5A4D"></span></td>
+            <td><span class="swatch live-swatch" data-token="--accent-muted" style="background:var(--accent-muted)"></span></td>
             <td><span class="token-name" data-copy="--accent-muted">--accent-muted</span></td>
-            <td class="hex-value">#3D5A4D</td>
+            <td class="hex-value live-hex-value" data-token="--accent-muted">—</td>
             <td>Accent card background tint</td>
             <td>Subtle highlight. Barely there.</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#7ECFAA"></span></td>
+            <td><span class="swatch live-swatch" data-token="--accent-hover" style="background:var(--accent-hover)"></span></td>
             <td><span class="token-name" data-copy="--accent-hover">--accent-hover</span></td>
-            <td class="hex-value">#7ECFAA</td>
+            <td class="hex-value live-hex-value" data-token="--accent-hover">—</td>
             <td>Hover state on accent</td>
             <td>Brighter. Invites interaction.</td>
           </tr>
@@ -773,33 +1087,33 @@ body {
         <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th></tr></thead>
         <tbody>
           <tr>
-            <td><span class="swatch" style="background:#6BC49F"></span></td>
+            <td><span class="swatch live-swatch" data-token="--status-success" style="background:var(--status-success)"></span></td>
             <td><span class="token-name" data-copy="--status-success">--status-success</span></td>
-            <td class="hex-value">#6BC49F</td>
+            <td class="hex-value live-hex-value" data-token="--status-success">—</td>
             <td>DONE badge, active pulse dot</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#6BC49F"></span></td>
+            <td><span class="swatch live-swatch" data-token="--status-running" style="background:var(--status-running)"></span></td>
             <td><span class="token-name" data-copy="--status-running">--status-running</span></td>
-            <td class="hex-value">#6BC49F</td>
+            <td class="hex-value live-hex-value" data-token="--status-running">—</td>
             <td>RUNNING badge background</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#8AB4A0"></span></td>
+            <td><span class="swatch live-swatch" data-token="--status-info" style="background:var(--status-info)"></span></td>
             <td><span class="token-name" data-copy="--status-info">--status-info</span></td>
-            <td class="hex-value">#8AB4A0</td>
+            <td class="hex-value live-hex-value" data-token="--status-info">—</td>
             <td>System message label</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#F0B429"></span></td>
+            <td><span class="swatch live-swatch" data-token="--status-warning" style="background:var(--status-warning)"></span></td>
             <td><span class="token-name" data-copy="--status-warning">--status-warning</span></td>
-            <td class="hex-value">#F0B429</td>
+            <td class="hex-value live-hex-value" data-token="--status-warning">—</td>
             <td>Percentage indicator, attention</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#EF4444"></span></td>
+            <td><span class="swatch live-swatch" data-token="--status-error" style="background:var(--status-error)"></span></td>
             <td><span class="token-name" data-copy="--status-error">--status-error</span></td>
-            <td class="hex-value">#EF4444</td>
+            <td class="hex-value live-hex-value" data-token="--status-error">—</td>
             <td>Error, critical</td>
           </tr>
         </tbody>
@@ -839,27 +1153,27 @@ body {
         <thead><tr><th>Swatch</th><th>Token</th><th>Hex</th><th>Role</th></tr></thead>
         <tbody>
           <tr>
-            <td><span class="swatch" style="background:#292D32"></span></td>
+            <td><span class="swatch live-swatch" data-token="--chrome-tab-bg" style="background:var(--chrome-tab-bg)"></span></td>
             <td><span class="token-name" data-copy="--chrome-tab-bg">--chrome-tab-bg</span></td>
-            <td class="hex-value">#292D32</td>
+            <td class="hex-value live-hex-value" data-token="--chrome-tab-bg">—</td>
             <td>Tab bar background</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#1E2327"></span></td>
+            <td><span class="swatch live-swatch" data-token="--chrome-tab-active" style="background:var(--chrome-tab-active)"></span></td>
             <td><span class="token-name" data-copy="--chrome-tab-active">--chrome-tab-active</span></td>
-            <td class="hex-value">#1E2327</td>
+            <td class="hex-value live-hex-value" data-token="--chrome-tab-active">—</td>
             <td>Active tab (matches surface-deep)</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#1E2327"></span></td>
+            <td><span class="swatch live-swatch" data-token="--chrome-toolbar" style="background:var(--chrome-toolbar)"></span></td>
             <td><span class="token-name" data-copy="--chrome-toolbar">--chrome-toolbar</span></td>
-            <td class="hex-value">#1E2327</td>
+            <td class="hex-value live-hex-value" data-token="--chrome-toolbar">—</td>
             <td>URL bar area background</td>
           </tr>
           <tr>
-            <td><span class="swatch" style="background:#9AA0A6"></span></td>
+            <td><span class="swatch live-swatch" data-token="--chrome-icon" style="background:var(--chrome-icon)"></span></td>
             <td><span class="token-name" data-copy="--chrome-icon">--chrome-icon</span></td>
-            <td class="hex-value">#9AA0A6</td>
+            <td class="hex-value live-hex-value" data-token="--chrome-icon">—</td>
             <td>Extension icons, nav arrows</td>
           </tr>
         </tbody>
@@ -1088,20 +1402,20 @@ body {
       <h2>Contrast Reference</h2>
     </div>
     <p class="section-rationale">
-      All text meets WCAG AA on intended backgrounds. Tertiary text (~3.5:1) passes AA for large text and UI components. Focus ring is 2px solid accent with 2px offset.
+      All text meets WCAG AA on intended backgrounds. Hex codes below update with the active palette. Contrast ratios shown are approximate for Direction A (Coherent Verdant) on the v0.3 base; other directions vary.
     </p>
 
     <div class="token-table-wrap">
       <table class="token-table">
         <thead><tr><th>Foreground</th><th>Background</th><th>Ratio</th><th>Level</th></tr></thead>
         <tbody>
-          <tr><td style="color:var(--text-primary)">--text-primary (#E8EAED)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aaa">~10:1</span></td><td>AAA</td></tr>
-          <tr><td style="color:var(--text-secondary)">--text-secondary (#9AA0A6)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.5:1</span></td><td>AA</td></tr>
-          <tr><td style="color:var(--text-tertiary)">--text-tertiary (#6B7280)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~3.5:1</span></td><td>AA (large)</td></tr>
-          <tr><td style="color:var(--accent)">--accent (#8AB4A0)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~4.8:1</span></td><td>AA</td></tr>
-          <tr><td style="color:var(--accent-strong)">--accent-strong (#6BC49F)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.9:1</span></td><td>AA</td></tr>
-          <tr><td style="color:var(--status-warning)">--status-warning (#F0B429)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aaa">~10.8:1</span></td><td>AAA</td></tr>
-          <tr><td style="color:var(--status-error)">--status-error (#EF4444)</td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.7:1</span></td><td>AA</td></tr>
+          <tr><td style="color:var(--text-primary)">--text-primary <span class="live-hex-value" data-token="--text-primary">—</span></td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aaa">~16.5:1</span></td><td>AAA</td></tr>
+          <tr><td style="color:var(--text-secondary)">--text-secondary <span class="live-hex-value" data-token="--text-secondary">—</span></td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aaa">~8.4:1</span></td><td>AAA</td></tr>
+          <tr><td style="color:var(--text-tertiary)">--text-tertiary <span class="live-hex-value" data-token="--text-tertiary">—</span></td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~4.3:1</span></td><td>AA (large)</td></tr>
+          <tr><td style="color:var(--accent)">--accent <span class="live-hex-value" data-token="--accent">—</span></td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~7.2:1</span></td><td>AA</td></tr>
+          <tr><td style="color:var(--accent-strong)">--accent-strong <span class="live-hex-value" data-token="--accent-strong">—</span></td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.4:1</span></td><td>AA</td></tr>
+          <tr><td style="color:var(--status-warning)">--status-warning <span class="live-hex-value" data-token="--status-warning">—</span></td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aaa">~10.8:1</span></td><td>AAA</td></tr>
+          <tr><td style="color:var(--status-error)">--status-error <span class="live-hex-value" data-token="--status-error">—</span></td><td style="background:var(--surface-deepest);color:var(--text-primary);padding:0.4rem 0.75rem">--surface-deepest</td><td><span class="contrast-badge contrast-aa">~5.7:1</span></td><td>AA</td></tr>
         </tbody>
       </table>
     </div>
@@ -1148,9 +1462,9 @@ body {
 
     <!-- ── Footer ── -->
     <div style="margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border-subtle);font-size:0.6875rem;color:var(--text-tertiary);display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
-      <span>ROSI Design System v0.2</span>
-      <span>Extracted from ResonantOS Browser community build · 2026-05-27</span>
-      <span>By Nami 🌊 + Claude UI extraction</span>
+      <span>ROSI Design System v0.3 · 5-direction comparison</span>
+      <span>Aligned palette: Coherent Verdant (Direction A default)</span>
+      <span>By Maestro (conductor) + Luma (UI) · Updated 2026-06-16</span>
     </div>
 
   </div>
@@ -1201,6 +1515,71 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
     if (window.innerWidth <= 900) toggleSidebar();
   });
 });
+
+/* ── Palette switcher: persist to localStorage ── */
+(function () {
+  const STORAGE_KEY = 'rosi.palette';
+  const VALID = ['a', 'b', 'c', 'd', 'e'];
+  const root = document.documentElement;
+  const pills = document.querySelectorAll('.palette-pill');
+  // Only update text in elements meant to display token values. Swatches
+  // use data-token for their background color and must not have text injected.
+  const tokenLabels = document.querySelectorAll('.live-hex-value, code[data-token]');
+
+  function resolveToken(name) {
+    return getComputedStyle(root).getPropertyValue(name).trim();
+  }
+
+  function refreshTokenLabels() {
+    tokenLabels.forEach(el => {
+      const name = el.dataset.token;
+      if (!name) return;
+      const value = resolveToken(name) || '—';
+      // Layer-stack <code> elements use the "name · value" form.
+      if (el.tagName === 'CODE') {
+        el.textContent = name + ' · ' + value;
+      } else {
+        // Table hex-value cells show just the value.
+        el.textContent = value;
+      }
+    });
+  }
+
+  function applyPalette(key) {
+    if (!VALID.includes(key)) key = 'a';
+    root.setAttribute('data-palette', key);
+    pills.forEach(p => {
+      p.setAttribute('aria-pressed', p.dataset.palette === key ? 'true' : 'false');
+    });
+    refreshTokenLabels();
+  }
+
+  function readStored() {
+    try {
+      const v = localStorage.getItem(STORAGE_KEY);
+      return VALID.includes(v) ? v : 'a';
+    } catch (e) { return 'a'; }
+  }
+
+  function writeStored(key) {
+    try { localStorage.setItem(STORAGE_KEY, key); } catch (e) {}
+  }
+
+  // Initial state from localStorage, but URL ?p= takes precedence (so a direct link to a
+  // specific palette works without a click, and headless screenshot tools can target one).
+  const urlParam = new URLSearchParams(location.search).get('p');
+  const initial = (urlParam && VALID.includes(urlParam)) ? urlParam : readStored();
+  applyPalette(initial);
+  if (urlParam && VALID.includes(urlParam)) writeStored(urlParam);
+
+  pills.forEach(p => {
+    p.addEventListener('click', () => {
+      const key = p.dataset.palette;
+      applyPalette(key);
+      writeStored(key);
+    });
+  });
+})();
 </script>
 
 </body>

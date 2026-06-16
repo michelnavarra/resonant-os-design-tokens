@@ -72,10 +72,9 @@
 ## Credits
 
 - **Michel Navarra** — Lead Designer
-- **Maestro** — Orchestrator
-- **Sokar** — Design Architecture
-- **Luma** — Visual Guide
-- **Nstudio** — Build System
+- **Maestro / Luma** — Orchestration and visual guide
+- **Sokar** — Design architecture
+- **Nstudio** — Build system
 
 ## License
 

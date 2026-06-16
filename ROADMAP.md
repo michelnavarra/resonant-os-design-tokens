@@ -1,218 +1,192 @@
-# ROSI — Roadmap
-**Date:** 2026-05-28
-**Status:** Active — Phase 0 in progress
-**Owner:** Nami (Orchestrator) + Michel (Lead Designer)
-**Repo (target):** `github.com/michelnavarra/ROSI-design-system` → `ResonantOS/ROSI-design-system`
+# ROSI: Roadmap
+**Date:** 2026-06-15 (refreshed after repo restructure + browser-first audit)
+**Status:** Phase 0 complete. Phase 1 atoms in planning, grounded in actual current dev team CSS.
+**Owner:** Maestro (Orchestrator) + Michel (Lead Designer)
+**Repo:** https://github.com/ResonantOS/2.0.0-alpha (branch `dev`)
+**Local mirror:** `Nstudio/public-community/projects/resonant-os/`
 
 ---
 
 ## The Vision
 
-**ROSI = Resonant OS Interface** — the public design system for the ResonantOS community.
+ROSI = Resonant OS Interface. The public design system for the ResonantOS community.
 
 Built from the real Browser extension UI (browser-first architecture), extracted into atomic tokens, and shipped as a living system the dev team can pull from.
 
 ```
-Source: ResonantOS Browser Extension (built by Tom + Manolo + Analog 6)
+Source: ResonantOS Browser Extension (browser-first architecture)
    ↓
-Extraction: Atomic design tokens (v0.2 — blue-gray + sage green)
+Extraction: Atomic design tokens (W3C spec, v0.2, blue-gray + sage green, DRAFT)
    ↓
 ROSI Design System: tokens.json + CSS + HTML guide + components
    ↓
-GitHub Repo: dev team syncs, auto-updates flow both ways
+Dev team consumes tokens in their extension CSS
 ```
 
 ---
 
-## Identity Shift: v0.1 → v0.2
+## Important Update (2026-06-15)
 
-| | Old (v0.1 — Sokar Dashboard) | New (v0.2 — Browser Extension) |
-|---|---|---|
-| Backgrounds | Forest green #060F0A | Blue-gray #1A1E21 |
-| Accent | Phosphor Green #4ADE80 (loud) | Sage Green #8AB4A0 (muted) |
-| Violet accent | Yes #A855F7 | Gone. One accent only |
-| Light theme | Planned | No. Dark only |
-| Depth | Shadows | Tonal layering, no shadows |
-| Typography | Poppins/Inter/JetBrains | system-ui + Inter display only |
-| Source | Internal concept | Real Browser extension UI |
+### Repo restructure (d-023)
+- Old: `ResonantOS/resonantos-vnext` (branch `main`)
+- New: `ResonantOS/2.0.0-alpha` (branch `dev`)
+- Architecture: `browser-first/resonantos-side-panel-extension/` replaces the legacy `src/modules/...` paths
+- ROSI auto-sync (cron `rosi-repo-sync`) was silently broken for 3+ days because it requested `?ref=main` on a repo whose default is now `dev`. **Fixed 2026-06-15.** REPO, BRANCH, and WATCH_PATHS updated.
+
+### Design system alignment: path (c) decided (2026-06-15, late session)
+
+Michel chose path (c): **align both sides around a coherent palette drawn from
+the v0.2 sage family and the current dev team vibrant green.** The Luma audit
+and palette proposal (delivered same session) recommended **Coherent
+Verdant** as the middle ground. Decision is in. Migration is in motion.
+
+The drift:
+
+| | v0.2 docs (sage on blue-gray) | Current impl (vibrant on near-black) | **v0.3 docs + impl (Coherent Verdant)** |
+|---|---|---|---|
+| Accent | `#8AB4A0` sage | `#24d18f` phosphor | **`#3FB286` Coherent Verdant** |
+| Background | `#1A1E21` blue-gray | `#070a08` near-black | **`#0F1411` green-warm dark** |
+| Text primary | `#E8EAED` neutral | `#EEF7F0` green-tint | **`#EAF1EC` green-warmth** |
+| Borders | neutral gray | green-tinted | **green-tinted, calibrated alphas** |
+
+**What changed:**
+
+- `tokens/tokens.json` and `tokens/tokens.css` bumped from v0.2 to v0.3, with
+  the new palette and a few new sizing tokens.
+- New file: `reference/ui-extraction-browser-v3.md`. Replaces v0.2 as the
+  canonical reference. Includes a full migration map (v0.2 → v3, and
+  current impl → v3) plus the 5-atom spec grounded in the 9 screenshots.
+- The dev team's `base-rail.css` 8 variables map cleanly to the new
+  64-token system. Proposed patch is in
+  `reference/ui-extraction-browser-v3.md` (section 0.2) and in
+  `DEV-TEAM-REPORT.md`. The dev team will apply it themselves.
+
+**5-atom spec, decided:**
+
+Button, Card, Input, Badge (with Pill / Eyebrow / Dot sub-variants), Icon.
+The "Tag" name from earlier was retired in favor of "Badge", the rendered
+UI shows no removable tag pattern, only the "New" pill and the status dots.
+Status dot is folded into Badge as the Dot sub-variant rather than its own
+atom (recommendation from Luma; can be split out if it grows).
 
 ---
 
-## Current State (May 28, 2026)
+## Current State (2026-06-15)
 
-### ✅ Completed
+### Done
 - [x] v0.2 color palette extracted from Browser UI (60 tokens, 12 categories)
-- [x] HTML Color Design System Guide built (~1,207 lines, Luma)
-- [x] Too-green issue fixed (v0.1 → v0.2 palette)
-- [x] Component contrast improved against body background
-- [x] Claude extraction: 8 atoms, 17 molecules, 9 organisms, 2 templates
-- [x] Reference screenshots and design docs archived
+- [x] HTML Color Design System Guide built
+- [x] Phase 0, tokens.json (W3C spec), tokens.css (CSS variables), shipped
+- [x] Phase 0, GitHub repo `michelnavarra/resonant-os-design-tokens` (will transfer to ResonantOS/ org once invite clears)
+- [x] Phase 0, auto-sync cron (rosi-repo-sync) registered and fixed to watch 7 files in the new browser-first architecture
+- [x] Repo restructure: 10 → 7 watch paths on the new repo + branch
+- [x] Audit of the actual current UI rendered (main-workspace + side-panel)
 
-### 📁 File Inventory
-```
-design-system/
-├── design-tokens/
-│   ├── color-palette-v0.1.md          ← archived (old Sokar dashboard)
-│   ├── color-palette-v0.2.md          ← canonical (new Browser)
-│   └── rosi-color-design-system-guide.html  ← Luma's HTML guide
-└── reference/
-    ├── dashboard-live.css              ← old
-    ├── DESIGN-spec.md                  ← old Sokar spec
-    ├── DESIGN-browser-community.md     ← new — from Claude extraction
-    ├── ui-extraction-browser.md        ← new — full atomic extraction
-    ├── screenshot01-browser-home.png
-    └── screenshot04-browser-agent.png
-```
+### In Progress
+- [x] Phase 1, 5 atoms specced (Button, Card, Input, Badge, Icon) in `reference/ui-extraction-browser-v3.md`
+- [x] Doc refresh (t-rosi-04), this file + DEV-TEAM-REPORT.md + new v3 extraction doc
+- [ ] Michel sign-off on the v0.3 palette and the atom spec
+- [ ] Phase 1.4, build atoms (CSS, HTML, accessibility patterns)
+- [ ] Phase 1.5, document atom API for dev team consumption
 
 ---
 
 ## Phases
 
-### Phase 0 — Token Contract + GitHub Setup
-**Status:** 🔄 In Progress
-**Owner:** Michel + Nami
+### Phase 0: Token Contract + GitHub Setup
+**Status:** Done
 
-| # | Task | Owner | Status |
-|---|------|-------|--------|
-| 0.1 | Create `tokens.json` (W3C Design Tokens spec) from v0.2 palette | Nami | Not started |
-| 0.2 | Create `tokens.css` (CSS custom properties) | Nami | Not started |
-| 0.3 | Create GitHub repo `ResonantOS/ROSI-design-system` | Michel | Not started |
-| 0.4 | Push initial structure to GitHub | Nami | Blocked by 0.3 |
-| 0.5 | Set up auto-sync cron (pull dev team changes daily, alert us) | Nami | Blocked by 0.4 |
-| 0.6 | Discuss sync strategy with Tom (Zoom 20h tonight) | Michel | Scheduled |
+| # | Task | Status |
+|---|------|--------|
+| 0.1 | tokens.json (W3C spec) | Done |
+| 0.2 | tokens.css (CSS variables) | Done |
+| 0.3 | GitHub repo creation | Done (`michelnavarra/resonant-os-design-tokens`) |
+| 0.4 | Push initial structure | Done |
+| 0.5 | Auto-sync cron (rosi-repo-sync) | Done, fixed 2026-06-15 to watch 7 paths on `dev` branch of new repo |
+| 0.6 | Discuss sync strategy with Tom | Done (May 25-26 legendary session) |
 
-### Phase 1 — Component Foundation
-**Status:** 🔜 Next
-**Owner:** Michel + Luma/Eiko
+### Phase 1: Component Foundation
+**Status:** Atom spec drafted, awaiting Michel sign-off
 
-| # | Task | Owner | Status |
-|---|------|-------|--------|
-| 1.1 | Define first 5 atoms from Browser UI extraction | Michel + Agent | Not started |
-| 1.2 | Build atoms: Button, Badge, Input, Tag, Icon | Agent | Blocked by 1.1 |
-| 1.3 | Build key molecules: Card, Panel, NavItem, FormField | Agent | Blocked by 1.2 |
-| 1.4 | Build organisms: SidePanel, WalletPanel, ChatPanel | Agent | Blocked by 1.3 |
-| 1.5 | Integrate with actual Browser extension CSS | Nami + Tom | Blocked by 1.4 |
+| # | Task | Status |
+|---|------|--------|
+| 1.1 | Audit actual current dev team CSS variables, surfaces, and component patterns | Done 2026-06-15 |
+| 1.2 | Decide design system alignment (a/b/c) | Done 2026-06-15, path (c) chosen, Coherent Verdant palette |
+| 1.3 | Define 5 atoms: Button, Card, Input, Badge (Pill/Eyebrow/Dot), Icon, spec against current dev team CSS | Done 2026-06-15, see `reference/ui-extraction-browser-v3.md` |
+| 1.4 | Build atoms (CSS, HTML, accessibility patterns) | Not started, blocked on Michel sign-off |
+| 1.5 | Document atom API for dev team consumption | Not started, blocked on 1.4 |
+| 1.6 | Hand off atoms to dev team | Blocked by 1.4 |
 
-### Phase 2 — Dashboard + Self-Updating
-**Status:** 🔜 Future
-**Owner:** Nami + Dev Team
+### Phase 2: Dev Team Sync + Consumption
+**Status:** Next after Phase 1
 
-| # | Task | Owner | Status |
-|---|------|-------|--------|
-| 2.1 | Build self-updating status dashboard | Nami + Agent | Blocked by Phase 1 |
-| 2.2 | Dashboard shows: token version, component count, sync status | Agent | Blocked by 2.1 |
-| 2.3 | Connect to GitHub webhook for live updates | Nami | Blocked by 2.1 |
-| 2.4 | Visual regression testing (automated) | Agent | Blocked by Phase 1 |
+| # | Task | Status |
+|---|------|--------|
+| 2.1 | Sync the new atoms to the dev team's extension CSS | Not started |
+| 2.2 | Migrate legacy `src/modules/*.css` to use atom classes | Not started |
+| 2.3 | Decide consumption mechanism (npm, Git submodule, copy-paste CSS, raw URL) | Open question for Tom |
+| 2.4 | Org transfer (michelnavarra → ResonantOS) | Open question |
 
-### Phase 3 — Community Distribution
-**Status:** 🔜 Future
-**Owner:** Michel + Community
+### Phase 3: Community Distribution
+**Status:** Future
 
-| # | Task | Owner | Status |
-|---|------|-------|--------|
-| 3.1 | Chrome Web Store listing design assets | Michel | Not started |
-| 3.2 | Community onboarding guide (design tokens usage) | Agent | Blocked by Phase 1 |
-| 3.3 | Contribution guidelines for community designers | Michel | Not started |
+| # | Task | Status |
+|---|------|--------|
+| 3.1 | Chrome Web Store listing design assets | Open (do they need our design help?) |
+| 3.2 | Community onboarding guide (design tokens usage) | Not started |
+| 3.3 | Contribution guidelines for community designers | Not started |
 
 ---
 
-## Dev Team Context (from Tom's Report — May 25-26)
+## Dev Team Context (Current)
 
-The Legendary Session delivered:
-- Chrome/Brave/Edge extension with 8 side panels
-- Augmentor AI (13 models, 6 providers)
-- Resonant Context SDK (the moat — viewport tracking, dwell time, behavioral patterns)
-- Resonant Blackboard (6 rendering modes)
-- 4 installation paths (macOS dmg, macOS curl, Linux, Windows)
-- 2 security audits passed, ~12,000+ lines of code
+### Resonator sprint
+The dev team needs our atoms before they start. Currently in planning.
 
-**Their next priorities:**
-| Priority | Task | Owner |
-|---|---|---|
-| 🔴 HIGH | On-chain token integration (Anchor programs for RES/RCT) | Tom + Manolo |
-| 🔴 HIGH | Publish to Chrome Web Store | Tom |
-| 🟡 MEDIUM | Build Resonator (visual guide layer) | Dev sprint |
-| 🟡 MEDIUM | Deploy Context SDK to verticals | Dev sprint |
+### Chrome Web Store
+Listing graphics + screenshots may need design help. Open question for Tom.
 
-**Sync needed:**
-- Our v0.2 tokens → their Browser extension CSS
-- Their code changes → our design system updates
-- Resonator sprint → needs our design system components
+### Org access
+We still need `ResonantOS/` org membership to transfer the repo. Open question.
+
+### Sync mechanism
+5 options on the table (npm, Git submodule, copy-paste CSS, raw URL, monorepo). Open question.
 
 ---
 
-## Key Design Principles (from Melodi Blueprint, adapted)
+## Key Design Principles (from Melodi Blueprint, adapted for ROSI)
 
 1. **The token layer is the contract.** No raw values in components.
 2. **Dark only.** No light theme for ROSI.
-3. **One accent.** Sage green #8AB4A0. No violet, no phosphor.
-4. **Tonal layering, no shadows.** Surfaces differentiate by lightness, not elevation.
-5. **system-ui first.** Inter for display only. No Poppins, no JetBrains for ROSI.
-6. **Accessible contrast is measurable.** 3:1 large text/UI, 4.5:1 small text.
-7. **Source of truth = the real Browser UI.** Not a concept, not a mockup.
-
----
-
-## GitHub Repo Structure (target)
-```
-ROSI-design-system/
-├── README.md
-├── CHANGELOG.md
-├── LICENSE
-├── tokens/
-│   ├── tokens.json          ← W3C Design Tokens (source of truth)
-│   ├── tokens.css           ← CSS custom properties (auto-generated)
-│   └── tokens.tailwind.js   ← Tailwind config (if needed)
-├── guide/
-│   ├── rosi-color-design-system-guide.html
-│   └── assets/
-├── reference/
-│   ├── screenshots/
-│   ├── ui-extraction-browser.md
-│   └── DESIGN-browser-community.md
-├── components/              ← Phase 1
-│   ├── atoms/
-│   ├── molecules/
-│   └── organisms/
-├── dashboard/               ← Phase 2
-└── .github/
-    └── workflows/
-        ├── token-sync.yml
-        └── visual-regression.yml
-```
-
----
-
-## Team Assignments
-
-| Agent | Role | Current Task |
-|-------|------|-------------|
-| Nami 🌊 | Orchestrator | Roadmap, GitHub setup, auto-sync cron |
-| Michel | Lead Designer | Token review, Tom sync, design decisions |
-| Luma ✨ | UI Designer | HTML guide delivered, ready for Phase 1 |
-| Eiko 🌸 | Visual Designer | Assist with component design (Phase 1) |
-| Tom + Dev Team | Engineering | Browser extension, on-chain, Chrome Store |
-| Manolo | Architecture | browser-first branch, sync strategy |
-
----
-
-## Open Questions (for Tom Zoom tonight)
-
-1. **Sync strategy** — How does the dev team want to consume our tokens? npm package? Git submodule? Copy-paste CSS?
-2. **Auto-update flow** — GitHub webhook on their repo → we get notified? Or cron pull?
-3. **Resonator sprint** — Timeline? We need to have atoms ready before they start.
-4. **Chrome Web Store** — Do they need design assets from us? Screenshots, listing graphics?
+3. **One accent.** Coherent Verdant (`#3FB286`), single accent family handles
+   all primary interaction. Status tones (warning amber, error red, info
+   blue) break from green only when semantics demand.
+4. **Tonal layering, no shadows.** Surfaces differentiate by lightness and
+   translucency, not elevation. Shadows reserved for overlays (popovers,
+   modals).
+5. **system-ui first.** Inter for display only. No Poppins, no JetBrains for
+   ROSI. Mono is `ui-monospace` system stack.
+6. **Accessible contrast is measurable.** Coherent Verdant on surface-base
+   clears 7:1 (AAA). Primary text clears 16:1. Tertiary text is AA Large /
+   AA UI only, never body text.
+7. **Borders carry the brand.** Borders are green-tinted at calibrated
+   alphas (0.14 to 0.55), not neutral gray. This is the visual signature
+   that the v0.2 blue-gray path missed.
+8. **Source of truth = the real Browser UI.** Not a concept, not a mockup.
+   The 9 screenshots from 2026-06-15 are the reference.
 
 ---
 
 ## References
 
-- **Dev team report:** Tom's Session Report (May 25-26, "The Legendary Session")
-- **Design system files:** `/Nstudio/public-community/projects/resonant-os/design-system/`
-- **Melodi roadmap:** `/Nstudio/Projects/blueprint/melodi/ROADMAP.md`
-- **Main repo:** `resonantos-alpha` (ManoloRemiddi/resonantos-alpha, private)
+- Upstream repo: https://github.com/ResonantOS/2.0.0-alpha (branch `dev`)
+- Our public tokens repo: https://github.com/michelnavarra/resonant-os-design-tokens
+- Auto-sync watch script: `Nstudio/public-community/projects/resonant-os/design-system/.github/sync-watch.sh`
+- Local clone for discovery: `/tmp/resonantos-alpha-tmp/`
+- STATE.json references: rosi-public-series, t-rosi-01 through t-rosi-04, d-020 through d-023
 
 ---
 
-*Last updated: 2026-05-28 14:45 GMT+2 by Nami*
-*Next update: After Tom Zoom (20h tonight)*
+*Last updated: 2026-06-15 23:05 GMT+2 by Luma (palette alignment + atom spec)*
+*Previous update: 2026-06-15 21:14 GMT+2 by Maestro (doc refresh)*
+*Next: Michel sign-off on v0.3 → Phase 1.4 atom build*

@@ -1,7 +1,7 @@
 # ROSI Color Palette v0.1 — ResonantOS Design System
 
 **Created:** 2026-05-27
-**Author:** Nami 🌊 (extracted from existing ResonantOS dashboard + Sokar's DESIGN.md)
+**Author:** Maestro 🌊 (extracted from existing ResonantOS dashboard + Sokar's DESIGN.md)
 **Status:** APPROVED — Michel sign-off on all 4 decisions. Ready for Luma to build HTML guide.
 **Identity:** Cyberdeck DNA — raw, functional, retro-futuristic, always in construction
 
@@ -175,6 +175,6 @@ Colors extracted from two existing sources:
 
 ---
 
-*Migrated by Nami from existing ResonantOS dashboard codebase + Sokar's DESIGN.md*
+*Migrated by Maestro from existing ResonantOS dashboard codebase + Sokar's DESIGN.md*
 *Decisions locked by Michel — 2026-05-27*
 *Next: Luma builds HTML guide → canonical tokens.json*
